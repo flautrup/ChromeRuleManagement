@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 
-<html ng-app>
+<html ng-app="qrsService">
 <head>
   <title>ChromeRuleManagement</title>
 
   <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
   <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-resource.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+
 
   <link rel="import" href="bower_components/core-icons/core-icons.html">
   <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
@@ -22,6 +23,7 @@
 </head>
 
 <body unresolved>
+  <div ng-controller="qrsController" ng>
   <core-toolbar>
     <paper-icon-button icon="menu"></paper-icon-button>
     <span flex>Security Rule Management</span>
@@ -29,6 +31,7 @@
   </core-toolbar>
 
   <section>
+  {{ about }}
   {{1+2}}
   </section>
 
@@ -41,5 +44,6 @@
   </section>
 
   <script src="main.js"></script>
+  </div>
 </body>
 </html>
