@@ -1,0 +1,15 @@
+{
+  "name": "ChromeRuleManagement",
+  "description": "",
+  "homepage": "",
+  "keywords": [
+  ],
+  "author": "",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#latest",
+    "paper-elements": "Polymer/paper-elements#latest",
+    "angular": "angular#latest",
+    "angular-resource": "angular-resource#latest"
+  }
+}
