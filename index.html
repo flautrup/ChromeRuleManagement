@@ -23,24 +23,22 @@
 </head>
 
 <body unresolved>
-  <div ng-controller="qrsController" ng>
+  <div ng-controller="qrsController">
   <core-toolbar>
     <paper-icon-button icon="menu"></paper-icon-button>
     <span flex>Security Rule Management</span>
-    <paper-fab icon="add"></paper-fab>
+    <paper-button ng-click="login()">
+      <core-icon icon="lock"></core-icon>
+    </paper-button>
+    <paper-button ng-click="refresh()">
+      <core-icon icon="refresh"></core-icon>
+    </paper-button>
   </core-toolbar>
 
   <section>
   {{ about }}
   {{1+2}}
-  </section>
 
-  <section>
-    <paper-tabs selected="0">
-      <paper-tab>Tab one</paper-tab>
-      <paper-tab>Tab two</paper-tab>
-      <paper-tab>Tab three</paper-tab>
-    </paper-tabs>
   </section>
 
   <script src="main.js"></script>

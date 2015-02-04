@@ -14,14 +14,22 @@ service.factory('QRS', function ($resource){
   };
 });*/
 
- service.controller("qrsController", ["$scope","QRS", function($scope, QRS) {
- var about=QRS.get(function() {
-   console.log(about);
- });
+ service.controller("qrsController", ["$scope","$http", "QRS", function($scope, $http, QRS) {
 
- var login=function() {
-   $http.get("https://rd-flp2.qliktech.com:4244/windows_authentication/", { withCredentials: true });
+ $scope.about="Empty";
+
+ $scope.refresh=function() {
+   /*var about=QRS.get(function() {
+      console.log(about);
+    });*/
+
+  $scope.about="Updated";
+ };
+
+
+$scope.login=function() {
+   $http.get("https://rd-flp2.qliktech.com/qrs/about", { withCredentials: true });
  }
 
- $scope.about=about;
+
 }]);
