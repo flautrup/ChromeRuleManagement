@@ -18,6 +18,7 @@
   <link rel="import" href="bower_components/paper-fab/paper-fab.html">
   <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
   <link rel="import" href="bower_components/paper-toast/paper-toast.html">
+  <link rel="import" href="bower_components/paper-item/paper-item.html">
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -27,19 +28,21 @@
   <core-toolbar>
     <paper-icon-button icon="menu"></paper-icon-button>
     <span flex>Security Rule Management</span>
+    <span>{{logedin}}</span>
     <paper-button ng-click="login()">
       <core-icon icon="lock"></core-icon>
     </paper-button>
-    <paper-button ng-click="refresh()">
+    <paper-button ng-click="list()">
       <core-icon icon="refresh"></core-icon>
     </paper-button>
   </core-toolbar>
 
-  <section>
-  {{ about }}
-  {{1+2}}
+ <section>
+  <paper-shadow>
+    <paper-item ng-repeat="rule in rulelist" value="{{rule.id}}" ng-click="detail(rule.id)"><div><div>Name:{{rule.name}}</div><div>Description:{{rule.comment}}</div></div></paper-item>
+  </paper-shadow>
+</section>
 
-  </section>
 
   <script src="main.js"></script>
   </div>

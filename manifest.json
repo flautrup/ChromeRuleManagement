@@ -15,5 +15,9 @@
     "background": {
       "scripts": ["background.js"]
     }
-  }
+  },
+  "permissions": [
+    "https://rd-flp2.qliktech.com/",
+    "unlimitedStorage"
+  ]
 }
