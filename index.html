@@ -8,8 +8,9 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
 
-
+  <link rel="import" href="bower_components/core-pages/core-pages.html">
   <link rel="import" href="bower_components/core-icons/core-icons.html">
+  <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
   <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
   <link rel="import" href="bower_components/font-roboto/roboto.html">
   <link rel="import" href="bower_components/paper-button/paper-button.html">
@@ -29,20 +30,29 @@
     <paper-icon-button icon="menu"></paper-icon-button>
     <span flex>Security Rule Management</span>
     <span>{{logedin}}</span>
-    <paper-button ng-click="login()">
-      <core-icon icon="lock"></core-icon>
-    </paper-button>
-    <paper-button ng-click="list()">
-      <core-icon icon="refresh"></core-icon>
-    </paper-button>
+    <core-icon-button ng-click="login()" icon="lock"></core-icon-button>
+    <core-icon-button ng-click="list()" icon="refresh"></core-icon-button>
   </core-toolbar>
 
- <section>
-  <paper-shadow>
-    <paper-item ng-repeat="rule in rulelist" value="{{rule.id}}" ng-click="detail(rule.id)"><div><div>Name:{{rule.name}}</div><div>Description:{{rule.comment}}</div></div></paper-item>
-  </paper-shadow>
-</section>
+  <paper-tabs selected="0">
+    <paper-tab>Server repository</paper-tab>
+    <paper-tab>Local repository</paper-tab>
+  </paper-tabs>
 
+  <section>
+    <core-pages selected="0" style="height: 5000px;">
+      <div>
+        <paper-shadow>
+          <paper-item ng-repeat="serverrule in serverrulelist" value="{{rule.id}}" ng-click="store(serverrule)"><div><div>Name:{{serverrule.name}}</div><div>Description:{{serverrule.comment}}</div></div></paper-item>
+        </paper-shadow>
+      </div>
+      <div>
+        <paper-shadow>
+          <paper-item ng-repeat="localrule in localrulelist" value="{{rule.id}}" ng-click="importToServer(localrule)"><div><div>Name:{{localrule.name}}</div><div>Description:{{localrule.comment}}</div></div></paper-item>
+        </paper-shadow>
+      </div>
+    </core-pages>
+  </section>
 
   <script src="main.js"></script>
   </div>
