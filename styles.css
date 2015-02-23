@@ -56,3 +56,17 @@ paper-tabs {
 paper-tabs[noink][nobar] paper-tab.core-selected {
   color: #ffff8d;
 }
+
+core-item.contact-item {
+      height: 50px;
+      background-color: #efefef;
+      border: 1px solid #ddd;
+}
+
+core-item.contact-item .name {
+      font-size: 1.125em;
+}
+
+core-item.contact-item .address {
+      font-size: 0.75em;
+}

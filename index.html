@@ -10,6 +10,8 @@
 
   <link rel="import" href="bower_components/core-pages/core-pages.html">
   <link rel="import" href="bower_components/core-icons/core-icons.html">
+  <link rel="import" href="bower_components/core-item/core-item.html">
+  <link rel="import" href="bower_components/core-input/core-input.html">
   <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
   <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
   <link rel="import" href="bower_components/font-roboto/roboto.html">
@@ -26,30 +28,40 @@
 
 <body unresolved>
   <div ng-controller="qrsController">
-  <core-toolbar>
+  <core-toolbar class="medium-tall">
     <paper-icon-button icon="menu"></paper-icon-button>
     <span flex>Security Rule Management</span>
     <span>{{logedin}}</span>
+    <span><input is="core-input" placeholder="a single-line input" value="{{server}}" committedValue="{{server}}"></span>
     <core-icon-button ng-click="login()" icon="lock"></core-icon-button>
     <core-icon-button ng-click="list()" icon="refresh"></core-icon-button>
+    <div class="bottom fit">
+    <paper-tabs selected="0" noink>
+      <paper-tab>Server repository</paper-tab>
+      <paper-tab>Local repository</paper-tab>
+    </paper-tabs>
+    </div>
   </core-toolbar>
 
-  <paper-tabs selected="0">
-    <paper-tab>Server repository</paper-tab>
-    <paper-tab>Local repository</paper-tab>
-  </paper-tabs>
 
   <section>
     <core-pages selected="0" style="height: 5000px;">
       <div>
-        <paper-shadow>
-          <paper-item ng-repeat="serverrule in serverrulelist" value="{{rule.id}}" ng-click="store(serverrule)"><div><div>Name:{{serverrule.name}}</div><div>Description:{{serverrule.comment}}</div></div></paper-item>
-        </paper-shadow>
+        <core-item ng-repeat="serverrule in serverrulelist" value="{{rule.id}}" ng-click="store(serverrule)"  class="contact-item">
+          <core-icon-button src="assets/icon_16.png"></core-icon-button>
+          <div flex>
+            <div class="name">{{serverrule.name}}</div>
+            <div class="Description">{{serverrule.comment}}</div>
+          </div>
+        </core-item>
       </div>
       <div>
-        <paper-shadow>
-          <paper-item ng-repeat="localrule in localrulelist" value="{{rule.id}}" ng-click="importToServer(localrule)"><div><div>Name:{{localrule.name}}</div><div>Description:{{localrule.comment}}</div></div></paper-item>
-        </paper-shadow>
+        <core-item ng-repeat="localrule in localrulelist" value="{{rule.id}}" ng-click="importToServer(localrule)" src="assets/icon_16.png" class="contact-item">
+          <div flex>
+            <div class="name">{{localrule.name}}</div>
+            <div class="Description">{{localrule.comment}}</div>
+          </div>
+        </core-item>
       </div>
     </core-pages>
   </section>

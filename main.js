@@ -48,6 +48,7 @@ service.factory('localStorage', function (){
 
 service.controller("qrsController", ["$scope","$http",  "QRS", "localStorage", function($scope, $http, QRS, localStorage) {
 
+ $scope.server=server;
  $scope.logedin="Logged out";
  $scope.about="Empty";
 
@@ -80,7 +81,7 @@ service.controller("qrsController", ["$scope","$http",  "QRS", "localStorage", f
 
 $scope.login=function() {
 
-   $http.get("https://rd-flp2.qliktech.com/qrs/about?xrfkey="+xrfkey, { withCredentials: true });
+   $http.get($scope.server+"?xrfkey="+xrfkey, { withCredentials: true });
    $scope.logedin="Logged in"
  }
 
