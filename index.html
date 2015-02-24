@@ -38,6 +38,7 @@
     <div class="bottom fit">
     <paper-tabs selected="0" noink>
       <paper-tab>Server repository</paper-tab>
+      <paper-tab>Rule package</paper-tab>
       <paper-tab>Local repository</paper-tab>
     </paper-tabs>
     </div>
@@ -51,17 +52,21 @@
           <core-icon-button src="assets/icon_16.png"></core-icon-button>
           <div flex>
             <div class="name">{{serverrule.name}}</div>
-            <div class="Description">{{serverrule.comment}}</div>
+            <div class="description">{{serverrule.comment}}</div>
+            <div>{{serverrule.customproperty}}</div>
           </div>
         </core-item>
       </div>
       <div>
-        <core-item ng-repeat="localrule in localrulelist" value="{{rule.id}}" ng-click="importToServer(localrule)" src="assets/icon_16.png" class="contact-item">
+        <core-item ng-repeat="packagerule in rulepackage" value="{{rule.id}}" ng-click="storeRulePackage(localrule)" src="assets/icon_16.png" class="contact-item">
           <div flex>
-            <div class="name">{{localrule.name}}</div>
-            <div class="Description">{{localrule.comment}}</div>
+            <div class="name">{{packagerule.name}}</div>
+            <div class="Description">{{packagerule.comment}}</div>
           </div>
         </core-item>
+      </div>
+      <div>
+        Local Storage
       </div>
     </core-pages>
   </section>

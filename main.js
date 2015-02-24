@@ -53,18 +53,35 @@ service.controller("qrsController", ["$scope","$http",  "QRS", "localStorage", f
  $scope.about="Empty";
 
  $scope.list=function() {
-   $scope.serverrulelist=QRS.query(function() {
-      console.log($scope.serverrulelist);
+   serverrulelist=QRS.query(function() {
+      console.log(serverrulelist);
    });
 
-   $scope.localrulelist=localStorage.get(function() {
-      console.log($scope.localrulelist);
+   serverrulelist.$promise.then(function() {
+
+   regexp=/@([\w\d]+)[=!\W]/g;
+
+   for(count=0; count< serverrulelist.length; count++) {
+      tmpcustomproperty=regexp.exec(serverrulelist[count]);
+      if( tmpcustomproperty!=null ) {
+        serverrulelist[count].customproperty=tmpcustomproperty;
+      }  else {
+        serverrulelist[count].customproperty=false;
+      }
+    }
+
+   });
+
+   $scope.serverrulelist=serverrulelist;
+
+   $scope.rulepackage=localStorage.get(function() {
+      console.log($scope.rulepackage);
    });
 
  };
 
  $scope.store=function (rule) {
-   $scope.localrulelist=localStorage.set(rule);
+   $scope.rulepackage=localStorage.set(rule);
  };
 
  $scope.importToServer=function (rule) {
