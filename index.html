@@ -22,6 +22,7 @@
   <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
   <link rel="import" href="bower_components/paper-toast/paper-toast.html">
   <link rel="import" href="bower_components/paper-item/paper-item.html">
+  <link rel="import" href="components/rule-item/rule-item.html">
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -46,22 +47,29 @@
 
 
   <section>
-    <core-pages selected="0" style="height: 5000px;">
+    <core-pages selected="0" style="overflow: auto; height:500px">
       <div>
-        <core-item ng-repeat="serverrule in serverrulelist" value="{{rule.id}}" ng-click="store(serverrule)"  class="contact-item">
-          <core-icon-button src="assets/icon_16.png"></core-icon-button>
+        <core-item ng-repeat="serverrule in serverrulelist" value="{{rule.id}}" ng-click="store(serverrule)"  class="rule-item">
+          <core-icon-button src="../../assets/icon_16.png"></core-icon-button>
           <div flex>
             <div class="name">{{serverrule.name}}</div>
             <div class="description">{{serverrule.comment}}</div>
-            <div>{{serverrule.customproperty}}</div>
+            <div class="header">Custom properties</div>
+            <div ng-repeat="customprop in serverrule.custompropertylist">{{customprop[0].name}}</div>
           </div>
         </core-item>
       </div>
       <div>
-        <core-item ng-repeat="packagerule in rulepackage" value="{{rule.id}}" ng-click="storeRulePackage(localrule)" src="assets/icon_16.png" class="contact-item">
+        <core-item ng-repeat="packagerule in rulepackage" value="{{packagerule.id}}" src="assets/icon_16.png" class="rule-item">
           <div flex>
-            <div class="name">{{packagerule.name}}</div>
-            <div class="Description">{{packagerule.comment}}</div>
+            <div>Rules</div>
+              <div class="name">{{packagerule.name}}</div>
+              <div class="description">{{packagerule.comment}}</div>
+        </core-item>
+        <core-item ng-repeat="packagecustprop in rulepackage" value="{{packagecustprop.id}}"  src="assets/icon_16.png" class="rule-item">
+            <div>Custom Properties</div>
+            <div class="name">{{packagecustorop.name}}</div>
+            <div class="description">{{packagecustprop.comment}}</div>
           </div>
         </core-item>
       </div>

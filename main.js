@@ -26,9 +26,19 @@ service.config(["$httpProvider", function($httpProvider) {
   $httpProvider.defaults.headers.common = { 'x-qlik-xrfkey': xrfkey };
 }]);
 
-service.factory('QRS', function ($resource){
+service.factory('QRSRules', function ($resource){
   return $resource(server+'qrs/systemrule/:ruleId?xrfkey='+xrfkey);
 });
+
+service.factory('QRSCustProp', function ($resource){
+  return $resource(server+"qrs/custompropertydefinition/full?filter=name eq ':custpropName'&xrfkey="+xrfkey,{},
+  { 'get':    {method:'GET', isArray:true},
+  'save':   {method:'POST'},
+  'query':  {method:'GET', isArray:true},
+  'remove': {method:'DELETE'},
+  'delete': {method:'DELETE'} });
+});
+
 
 service.factory('localStorage', function (){
   // Add support for reading and storing local storage.
@@ -46,34 +56,44 @@ service.factory('localStorage', function (){
 
 });
 
-service.controller("qrsController", ["$scope","$http",  "QRS", "localStorage", function($scope, $http, QRS, localStorage) {
+service.controller("qrsController", ["$scope","$http",  "QRSRules", "QRSCustProp", "localStorage", function($scope, $http, QRSRules, QRSCustProp, localStorage) {
 
  $scope.server=server;
  $scope.logedin="Logged out";
  $scope.about="Empty";
 
  $scope.list=function() {
-   serverrulelist=QRS.query(function() {
+   //GET rules
+   serverrulelist=QRSRules.query(function() {
       console.log(serverrulelist);
    });
 
+  //Wait for the result
    serverrulelist.$promise.then(function() {
 
+  //Scan for custom properties
    regexp=/@([\w\d]+)[=!\W]/g;
 
    for(count=0; count< serverrulelist.length; count++) {
-      tmpcustomproperty=regexp.exec(serverrulelist[count]);
-      if( tmpcustomproperty!=null ) {
-        serverrulelist[count].customproperty=tmpcustomproperty;
-      }  else {
-        serverrulelist[count].customproperty=false;
+      count2=0;
+      serverrulelist[count].custompropertylist=[];
+      while(tmpcustomproperty=regexp.exec(serverrulelist[count].rule)) {
+        tmpcustobj=QRSCustProp.get({custpropName: tmpcustomproperty[1]},function() {
+          console.log(tmpcustobj);
+        });
+        serverrulelist[count].custompropertylist.push(tmpcustobj);
+        count2++;
       }
-    }
-
+      if (count2==0) {
+        serverrulelist[count].custompropertylist.push("False");
+      }
+   }
    });
 
+  //Update list in $scope
    $scope.serverrulelist=serverrulelist;
 
+  //Get packages in local storage
    $scope.rulepackage=localStorage.get(function() {
       console.log($scope.rulepackage);
    });

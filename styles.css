@@ -12,6 +12,7 @@ body {
 
 section {
   margin: 20px;
+  height: 1000px;
 }
 
 a, a:hover {
@@ -19,7 +20,7 @@ a, a:hover {
 }
 
 core-toolbar {
-  background-color: #455ede;
+  background-color: #62AC1E;
   box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.2);
   color: #fff;
   font-size: 20px;
@@ -49,7 +50,7 @@ paper-fab {
 }
 
 paper-tabs {
-  background-color: #5677fc;
+  background-color: #C4D600;
   color: #fff;
 }
 
@@ -57,16 +58,31 @@ paper-tabs[noink][nobar] paper-tab.core-selected {
   color: #ffff8d;
 }
 
-core-item.contact-item {
-      height: 50px;
-      background-color: #efefef;
-      border: 1px solid #ddd;
+core-item.rule-item {
+      height: auto  ;
+      background-color: #DCDCDC;
+      border: 1px solid #7E8083;
 }
 
-core-item.contact-item .name {
-      font-size: 1.125em;
+core-pages.core-selected {
+    position: relative;
+    display: block;
 }
 
-core-item.contact-item .address {
-      font-size: 0.75em;
+core-item.rule-item .name {
+      font-size: 1.12em;
+      font-weight: bold;
+      margin-top:5px;
+      margin-bottom:5px;
+}
+
+core-item.rule-item .header {
+      margin-top: 5px;
+      font-size: 1.1em;
+      font-weight: bold;
+}
+
+core-item.rule-item .description {
+      font-size: 1em;
+      font-style: italic;
 }
