@@ -49,29 +49,28 @@
   <section>
     <core-pages selected="0" style="overflow: auto; height:500px">
       <div>
-        <core-item ng-repeat="serverrule in serverrulelist" value="{{rule.id}}" ng-click="store(serverrule)"  class="rule-item">
+        <core-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)"  class="rule-item">
           <core-icon-button src="../../assets/icon_16.png"></core-icon-button>
           <div flex>
-            <div class="name">{{serverrule.name}}</div>
-            <div class="description">{{serverrule.comment}}</div>
+            <div class="name">{{serverRule.name}}</div>
+            <div class="description">{{serverRule.comment}}</div>
             <div class="header">Custom properties</div>
-            <div ng-repeat="customprop in serverrule.custompropertylist">{{customprop[0].name}}</div>
+            <div ng-repeat="customprop in serverRule.customPropertyList">{{customprop[0].name}}</div>
           </div>
         </core-item>
       </div>
       <div>
-        <core-item ng-repeat="packagerule in rulepackage" value="{{packagerule.id}}" src="assets/icon_16.png" class="rule-item">
+        <span>Package Name<input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" committedValue="{{rulepPackageObj.packageName}}"></span>
+        <span>Description<input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" committedValue="{{rulePackageObj.packageDescription}}"></span>
+        <core-item ng-repeat="packageRule in rulePackageObj.rulePackageList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item">
           <div flex>
             <div>Rules</div>
-              <div class="name">{{packagerule.name}}</div>
-              <div class="description">{{packagerule.comment}}</div>
+              <div class="name">{{packageRule.name}}</div>
+              <div class="description">{{packageRule.comment}}</div>
+              <div ng-repeat="customprop in packageRule.customPropertyList">{{customprop[0].name}}</div>
+            </div>
         </core-item>
-        <core-item ng-repeat="packagecustprop in rulepackage" value="{{packagecustprop.id}}"  src="assets/icon_16.png" class="rule-item">
-            <div>Custom Properties</div>
-            <div class="name">{{packagecustorop.name}}</div>
-            <div class="description">{{packagecustprop.comment}}</div>
-          </div>
-        </core-item>
+        <core-icon-button ng-click="saveRulePackage()" icon="save"></core-icon-button>
       </div>
       <div>
         Local Storage
