@@ -173,7 +173,7 @@ $scope.saveRulePackage = function () {
 
 $scope.login=function() {
 
-   $http.get($scope.server+"?xrfkey="+XRFKEY, { withCredentials: true });
+   $http.get($scope.server+"/hub?xrfkey="+XRFKEY, { withCredentials: true });
    $scope.logedin="Logged in"
  }
 

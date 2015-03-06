@@ -22,7 +22,9 @@
   <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
   <link rel="import" href="bower_components/paper-toast/paper-toast.html">
   <link rel="import" href="bower_components/paper-item/paper-item.html">
-  <link rel="import" href="components/rule-item/rule-item.html">
+  <link rel="import" href="bower_components/paper-input/paper-input-decorator.html">
+  <link rel="import" href="bower_components/paper-radio-button/paper-radio-button.html">
+
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -59,15 +61,18 @@
           </div>
         </core-item>
       </div>
-      <div>
-        <span>Package Name<input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" committedValue="{{rulepPackageObj.packageName}}"></span>
-        <span>Description<input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" committedValue="{{rulePackageObj.packageDescription}}"></span>
+        <div> <paper-input-decorator label="Name" floatingLabel>
+          <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" committedValue="{{rulepPackageObj.packageName}}">
+        </paper-input-decorator>
+        <div> <paper-input-decorator label="Description" floatingLabel>
+          <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" committedValue="{{rulePackageObj.packageDescription}}">
+        </paper-input-decorator>
         <core-item ng-repeat="packageRule in rulePackageObj.rulePackageList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item">
           <div flex>
-            <div>Rules</div>
               <div class="name">{{packageRule.name}}</div>
               <div class="description">{{packageRule.comment}}</div>
               <div ng-repeat="customprop in packageRule.customPropertyList">{{customprop[0].name}}</div>
+              <div><paper-radio-button toggles></paper-radio-button>Enabled/Dissabled</div>
             </div>
         </core-item>
         <core-icon-button ng-click="saveRulePackage()" icon="save"></core-icon-button>
