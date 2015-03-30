@@ -55,7 +55,7 @@ service.factory('localStorage', function (){
       localrulelist.push(rule);
       return localrulelist;
     }
-  }
+  };
 
 });
 
@@ -66,7 +66,7 @@ service.factory('rulePackage', function (){
     packageName: "",
     packageDescription: "",
     rulePackageList: []
-  }
+  };
 
   return {
     get: function () {
@@ -84,7 +84,7 @@ service.factory('rulePackage', function (){
       rulePackageObj.packageDescription=description;
       return rulePackageObj;
     }
-  }
+  };
 
 });
 
@@ -98,7 +98,7 @@ service.controller("qrsController", ["$scope","$http",  "qrsRules", "qrsCustProp
     packageName: "",
     packageDescription: "",
     rulePackageList: []
-  }
+  };
 
 //Get the list of rules, parse for custom properties and fetch the custom properies
  $scope.list=function() {
@@ -124,7 +124,7 @@ service.controller("qrsController", ["$scope","$http",  "qrsRules", "qrsCustProp
         serverRuleList[count].customPropertyList.push(tmpCustObj);
         count2++;
       }
-      if (count2==0) {
+      if (count2===0) {
         serverRuleList[count].customPropertyList.push("False");
       }
    }
@@ -146,18 +146,18 @@ service.controller("qrsController", ["$scope","$http",  "qrsRules", "qrsCustProp
 
 $scope.setRulePackageName = function (name) {
   return rulePackage.setName(name);
-}
+};
 
 $scope.setRulePackageDescription = function (description) {
   return rulePackage.setDescription(description);
-}
+};
 
 $scope.saveRulePackage = function () {
   $scope.rulePackageObj=$scope.setRulePackageName($scope.rulePackageObj.packageName);
   $scope.rulePackageObj=$scope.setRulePackageDescription($scope.rulePackageObj.packageDescription);
 
   //store to local storage and clear.
-}
+};
 
  $scope.importToServer=function (rule) {
 
@@ -174,7 +174,8 @@ $scope.saveRulePackage = function () {
 $scope.login=function() {
 
    $http.get($scope.server+"/hub?xrfkey="+XRFKEY, { withCredentials: true });
-   $scope.logedin="Logged in"
- }
+   $scope.logedin="Logged in";
+   $scope.list();
+ };
 
 }]);
