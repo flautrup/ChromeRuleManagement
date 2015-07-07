@@ -35,7 +35,7 @@
     <paper-icon-button icon="menu"></paper-icon-button>
     <span flex>Security Rule Management</span>
     <span>{{logedin}}</span>
-    <span><input is="core-input" placeholder="a single-line input" value="{{server}}" committedValue="{{server}}"></span>
+    <span><input is="core-input" placeholder="a single-line input" value="{{server}}" ng-model="server" committedValue="{{server}}"></span>
     <core-icon-button ng-click="login()" icon="lock"></core-icon-button>
     <core-icon-button ng-click="list()" icon="refresh"></core-icon-button>
     <div class="bottom fit">
@@ -57,28 +57,38 @@
             <div class="name">{{serverRule.name}}</div>
             <div class="description">{{serverRule.comment}}</div>
             <div class="header">Custom properties</div>
-            <div ng-repeat="customprop in serverRule.customPropertyList">{{customprop[0].name}}</div>
+            <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop[0].name}}</div>
           </div>
         </core-item>
       </div>
-        <div> <paper-input-decorator label="Name" floatingLabel>
-          <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" committedValue="{{rulepPackageObj.packageName}}">
+      <div> 
+        <paper-input-decorator label="Name" floatingLabel>
+          <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedValue="{{rulepPackageObj.packageName}}">
         </paper-input-decorator>
-        <div> <paper-input-decorator label="Description" floatingLabel>
-          <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" committedValue="{{rulePackageObj.packageDescription}}">
+        <paper-input-decorator label="Description" floatingLabel>
+          <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedValue="{{rulePackageObj.packageDescription}}">
         </paper-input-decorator>
-        <core-item ng-repeat="packageRule in rulePackageObj.rulePackageList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item">
+        <core-item ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item">
           <div flex>
               <div class="name">{{packageRule.name}}</div>
               <div class="description">{{packageRule.comment}}</div>
-              <div ng-repeat="customprop in packageRule.customPropertyList">{{customprop[0].name}}</div>
+              <div class="header">Custom properties</div>
+              <div ng-repeat="customprop in packageRule.customPropertyObj">{{customprop[0].name}}</div>
               <div><paper-radio-button toggles></paper-radio-button>Enabled/Dissabled</div>
-            </div>
+          </div>
         </core-item>
         <core-icon-button ng-click="saveRulePackage()" icon="save"></core-icon-button>
+        <core-icon-button ng-click="clearRulePackage()" icon="clear"></core-icon-button>
       </div>
-      <div>
-        Local Storage
+      <div> 
+        <core-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
+          <core-icon-button ng-click="loadRulePackage()" icon="chevron-left"></core-icon-button>
+          <core-icon-button ng-click="uploadRulePackage()" icon="file-upload"></core-icon-button>
+          <div flex>
+              <div class="name">{{package.packageName}}</div>
+              <div class="description">{{package.packageDescription}}</div>
+          </div>
+        </core-item>
       </div>
     </core-pages>
   </section>

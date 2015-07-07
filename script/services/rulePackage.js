@@ -4,7 +4,7 @@ service.factory('rulePackage', function (){
   var rulePackageObj = {
     packageName: "",
     packageDescription: "",
-    rulePackageList: []
+    ruleList: []
   };
 
   return {
@@ -12,7 +12,7 @@ service.factory('rulePackage', function (){
       return rulePackageObj;
     },
     add: function (rule) {
-      rulePackageObj.rulePackageList.push(rule);
+      rulePackageObj.ruleList.push(rule);
       return rulePackageObj;
     },
     setName: function (name) {
@@ -21,6 +21,14 @@ service.factory('rulePackage', function (){
     },
     setDescription: function (description) {
       rulePackageObj.packageDescription=description;
+      return rulePackageObj;
+    },
+    clear: function () {
+      rulePackageObj = {
+        packageName: "",
+        packageDescription: "",
+        ruleList: []
+      };  
       return rulePackageObj;
     }
   };

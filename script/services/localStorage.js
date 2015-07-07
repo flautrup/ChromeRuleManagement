@@ -1,15 +1,15 @@
 //Service to manage logal storage of rule packages
 service.factory('localStorage', function (){
   // Add support for reading and storing local storage.
-  var localrulelist = [];
+  var localpackagelist = [];
 
   return {
     get: function () {
-      return localrulelist;
+      return localpackagelist;
     },
-    set: function (rule) {
-      localrulelist.push(rule);
-      return localrulelist;
+    set: function (rulePackage) {
+      localpackagelist.push(rulePackage);
+      return localpackagelist;
     }
   };
 
