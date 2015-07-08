@@ -70,6 +70,7 @@ $scope.setRulePackageDescription = function (description) {
   return rulePackage.setDescription(description);
 };
 
+//Saves rule package using localStorage service
 $scope.saveRulePackage = function () {
   $scope.rulePackageObj=$scope.setRulePackageName($scope.rulePackageObj.packageName);
   $scope.rulePackageObj=$scope.setRulePackageDescription($scope.rulePackageObj.packageDescription);
@@ -78,16 +79,26 @@ $scope.saveRulePackage = function () {
   $scope.packageList=localStorage.set($scope.rulePackageObj);
 };
 
+//Clears current rule package
 $scope.clearRulePackage = function () {
   $scope.rulePackageObj = rulePackage.clear();
 };
 
-$scope.loadRulePackage = function () {
+//Load rule package from list of packages in localStorage
+$scope.loadRulePackage = function (findRulePackage) {
+  for (count=0;count<$scope.packageList.length;count++) {
+    if ($scope.packageList[count].packageName==findRulePackage.packageName) {
+      $scope.rulePackageObj=findRulePackage;
+    }
+  }
 };
 
-$scope.uploadRulePackage = function () {
+$scope.uploadRulePackage = function (findRuleName) {
 };
 
+$scope.deleteRulePackage = function (findRuleName) {
+  $scope.packageList=localStorage.delete(findRuleName);
+}
 
 $scope.importToServer=function (rule) {
 

@@ -61,7 +61,7 @@
           </div>
         </core-item>
       </div>
-      <div> 
+      <div>
         <paper-input-decorator label="Name" floatingLabel>
           <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedValue="{{rulepPackageObj.packageName}}">
         </paper-input-decorator>
@@ -80,10 +80,11 @@
         <core-icon-button ng-click="saveRulePackage()" icon="save"></core-icon-button>
         <core-icon-button ng-click="clearRulePackage()" icon="clear"></core-icon-button>
       </div>
-      <div> 
+      <div>
         <core-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
-          <core-icon-button ng-click="loadRulePackage()" icon="chevron-left"></core-icon-button>
-          <core-icon-button ng-click="uploadRulePackage()" icon="file-upload"></core-icon-button>
+          <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
+          <core-icon-button ng-click="uploadRulePackage(package)" icon="file-upload"></core-icon-button>
+          <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
           <div flex>
               <div class="name">{{package.packageName}}</div>
               <div class="description">{{package.packageDescription}}</div>

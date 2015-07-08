@@ -5,10 +5,23 @@ service.factory('localStorage', function (){
 
   return {
     get: function () {
+      chrome.storage.local.get({'localpackagelist': []}, function (result){
+        localpackagelist=result.localpackagelist;
+      });
       return localpackagelist;
     },
     set: function (rulePackage) {
       localpackagelist.push(rulePackage);
+      chrome.storage.local.set({'localpackagelist': localpackagelist});
+      return localpackagelist;
+    },
+    delete: function (rulePackage) {
+      var index=0;
+      while(localpackagelist[index].packageName!=rulePackage.packageName) {
+        index++;
+      }
+      localpackagelist.splice(index,1);
+      chrome.storage.local.set({'localpackagelist': localpackagelist});
       return localpackagelist;
     }
   };
