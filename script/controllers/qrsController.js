@@ -43,9 +43,7 @@ service.controller("qrsController", ["$scope","$http",  "qrsRules", "qrsCustProp
    $scope.serverRuleList=serverRuleList;
 
   //Get packages in local storage
-   $scope.packageList=localStorage.get(function() {
-      console.log($scope.rulePackage);
-   });
+   $scope.packageList=localStorage.get();
 
 };
 
@@ -89,6 +87,7 @@ $scope.saveRulePackage = function () {
   $scope.rulePackageObj=$scope.setRulePackageDescription($scope.rulePackageObj.packageDescription);
 
   //store to local storage and clear.
+  console.log($scope.packageList);
   $scope.packageList=localStorage.set($scope.rulePackageObj);
 };
 
@@ -104,9 +103,15 @@ $scope.loadRulePackage = function (findRulePackage) {
       $scope.rulePackageObj=findRulePackage;
     }
   }
+  document.querySelector('core-pages').selected="1";
+  document.querySelector('paper-tabs').selected="1";
 };
 
 //Upload rulepackage to server
+//Todo: create a new service for rules
+//      Read rule with ID if exsist update if not create
+//      If rule contains custom properties do the same.
+//      i.e. ask for custom property if exsist update else create.
 $scope.uploadRulePackage = function (findRuleName) {
 };
 
