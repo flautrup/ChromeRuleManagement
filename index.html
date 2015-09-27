@@ -89,7 +89,6 @@
       <div style="overflow: auto; height:500px">
         <core-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
           <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
-          <core-icon-button ng-click="uploadRulePackage(package)" icon="file-upload"></core-icon-button>
           <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
           <div flex>
               <div class="name">{{package.packageName}}</div>
