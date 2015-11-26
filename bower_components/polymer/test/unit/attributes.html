@@ -1,0 +1,36 @@
+<!DOCTYPE html><!--
+@license
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head>
+  <meta charset="utf-8">
+  <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../../polymer.html">
+  <link rel="import" href="attributes-elements.html">
+</head><body>
+
+
+<x-basic id="basicDefault"></x-basic>
+
+<x-compose id="compose"></x-compose>
+
+<x-basic id="basicConfigured" object="{&quot;foo&quot;: &quot;bar&quot;, &quot;nested&quot;: {&quot;meaning&quot;: 42}, &quot;arr&quot;: [0, &quot;foo&quot;, true]}" array="[0, &quot;foo&quot;, true, {&quot;foo&quot;: &quot;bar&quot;}]" number="42" string="The quick brown fox" bool="" date="Wed Mar 04 2015 10:46:05 GMT-0800 (PST)" dash-case="The quick brown fox" no-type="Should be String" read-only="Should not change">
+</x-basic>
+
+<x-reflect id="reflectDefault"></x-reflect>
+
+<x-reflect id="reflectConfigured" object="{&quot;foo&quot;: &quot;bar&quot;, &quot;nested&quot;: {&quot;meaning&quot;: 42}, &quot;arr&quot;: [0, &quot;foo&quot;, true]}" array="[0, &quot;foo&quot;, true, {&quot;foo&quot;: &quot;bar&quot;}]" number="42" string="The quick brown fox" bool="" date="Wed Mar 04 2015 10:46:05 GMT-0800 (PST)" dash-case="The quick brown fox" no-type="Should be String" read-only="Should not change">
+</x-reflect>
+
+<script src="attributes.html.0.js"></script>
+
+
+
+
+
+</body></html>

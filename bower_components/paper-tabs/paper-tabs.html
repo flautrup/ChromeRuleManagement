@@ -82,7 +82,7 @@ To change the ink ripple color:
 <link rel="import" href="../core-resizable/core-resizable.html">
 <link rel="import" href="paper-tab.html">
 
-</head><body><polymer-element name="paper-tabs" extends="core-selector" attributes="noink nobar noslide scrollable hideScrollButton" role="tablist" horizontal="" center="" layout="">
+</head><body><polymer-element name="paper-tabs" extends="core-selector" attributes="noink nobar noslide scrollable hideScrollButton alignBottom" role="tablist" horizontal="" center="" layout="">
 <template>
 
   <link rel="stylesheet" href="paper-tabs.css">
@@ -95,7 +95,7 @@ To change the ink ripple color:
   
     <div id="tabsContent" horizontal="" layout?="{{!scrollable}}">
       <shadow></shadow>
-      <div id="selectionBar" hidden?="{{nobar}}" on-transitionend="{{barTransitionEnd}}"></div>
+      <div id="selectionBar" hidden?="{{nobar}}" class="{{ {alignBottom: alignBottom} | tokenList }}" on-transitionend="{{barTransitionEnd}}"></div>
     </div>
     
   </div>

@@ -1,0 +1,46 @@
+<html><head><script src="x-repeat-elements.html.0.js"></script>
+
+</head><body><dom-module id="x-foo">
+  <template>
+    <x-bar id="bar" prop="{{prop}}" item-prop="{{itemProp}}" parent-prop="{{parentProp}}" parent-item-prop="{{parentItemProp}}" parent-parent-prop="{{parentParentProp}}" parent-parent-item-prop="{{parentParentItemProp}}" parent-parent-parent-prop="{{parentParentParentProp}}" parent-parent-parent-item-prop="{{parentParentParentItemProp}}">
+    </x-bar>
+  </template>
+</dom-module>
+<script src="x-repeat-elements.html.1.js"></script>
+
+<dom-module id="x-nested-repeat">
+  <template>
+    <template id="repeater" is="x-repeat" items="{{items}}">
+      <x-foo on-test1="testHandler1" prop="{{prop}}" item-prop="{{item.prop}}" parent-prop="{{parent.prop}}" parent-item-prop="{{parent.item.prop}}">
+      </x-foo>
+      <template is="x-repeat" items="{{item.items}}">
+        <x-foo on-test2="testHandler2" prop="{{prop}}" item-prop="{{item.prop}}" parent-prop="{{parent.prop}}" parent-item-prop="{{parent.item.prop}}" parent-parent-prop="{{parent.parent.prop}}" parent-parent-item-prop="{{parent.parent.item.prop}}">
+        </x-foo>
+        <template is="x-repeat" items="{{item.items}}">
+          <x-foo on-test3="testHandler3" prop="{{prop}}" item-prop="{{item.prop}}" parent-prop="{{parent.prop}}" parent-item-prop="{{parent.item.prop}}" parent-parent-prop="{{parent.parent.prop}}" parent-parent-item-prop="{{parent.parent.item.prop}}" parent-parent-parent-prop="{{parent.parent.parent.prop}}" parent-parent-parent-item-prop="{{parent.parent.parent.item.prop}}">
+          </x-foo>
+        </template>
+      </template>
+    </template>
+  </template>
+</dom-module>
+<script src="x-repeat-elements.html.2.js"></script>
+
+<dom-module id="x-nested-repeat-configured">
+  <template>
+    <template id="repeater" is="x-repeat" items="{{items}}">
+      <x-foo prop="{{prop}}" item-prop="{{item.prop}}" parent-prop="{{parent.prop}}" parent-item-prop="{{parent.item.prop}}">
+      </x-foo>
+      <template is="x-repeat" items="{{item.items}}">
+        <x-foo prop="{{prop}}" item-prop="{{item.prop}}" parent-prop="{{parent.prop}}" parent-item-prop="{{parent.item.prop}}" parent-parent-prop="{{parent.parent.prop}}" parent-parent-item-prop="{{parent.parent.item.prop}}">
+        </x-foo>
+        <template is="x-repeat" items="{{item.items}}">
+          <x-foo prop="{{prop}}" item-prop="{{item.prop}}" parent-prop="{{parent.prop}}" parent-item-prop="{{parent.item.prop}}" parent-parent-prop="{{parent.parent.prop}}" parent-parent-item-prop="{{parent.parent.item.prop}}" parent-parent-parent-prop="{{parent.parent.parent.prop}}" parent-parent-parent-item-prop="{{parent.parent.parent.item.prop}}">
+          </x-foo>
+        </template>
+      </template>
+    </template>
+  </template>
+</dom-module>
+<script src="x-repeat-elements.html.3.js"></script>
+</body></html>

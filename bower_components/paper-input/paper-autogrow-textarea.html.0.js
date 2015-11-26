@@ -63,7 +63,7 @@
     /**
      * Sizes this element to fit the input value. This function is automatically called
      * when the user types in new input, but you must call this function if the value
-     * is updated imperatively.
+     * is updated imperatively. Takes as parameter the textarea containing the input.
      *
      * @method update
      * @param Element The input

@@ -1,6 +1,6 @@
 
 
-    Polymer('core-icon-button', {
+    var p = {
 
       /**
        * The URL of an image for the icon.  Should not use `icon` property
@@ -37,6 +37,9 @@
         this.classList.toggle('selected', this.active);
       }
 
-    });
+    };
+    
+    Polymer.mixin2(p, Polymer.CoreFocusable);
+    Polymer('core-icon-button', p);
 
   

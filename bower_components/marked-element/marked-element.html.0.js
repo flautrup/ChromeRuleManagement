@@ -16,6 +16,8 @@
     textChanged: function (oldVal, newVal) {
       if (newVal) {
         this.innerHTML = marked(this.text);
+      } else {
+        this.innerHTML = "";
       }
     },
 

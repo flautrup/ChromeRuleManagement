@@ -7,7 +7,7 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-// @version 0.5.4
+// @version 0.7.18
 if (typeof WeakMap === "undefined") {
   (function() {
     var defineProperty = Object.defineProperty;
@@ -45,6 +45,9 @@ if (typeof WeakMap === "undefined") {
 }
 
 (function(global) {
+  if (global.JsMutationObserver) {
+    return;
+  }
   var registrationsTable = new WeakMap();
   var setImmediate;
   if (/Trident|Edge/.test(navigator.userAgent)) {
@@ -315,7 +318,6 @@ if (typeof WeakMap === "undefined") {
         this.addTransientObserver(e.target);
 
        case "DOMNodeInserted":
-        var target = e.relatedNode;
         var changedNode = e.target;
         var addedNodes, removedNodes;
         if (e.type === "DOMNodeInserted") {
@@ -327,12 +329,12 @@ if (typeof WeakMap === "undefined") {
         }
         var previousSibling = changedNode.previousSibling;
         var nextSibling = changedNode.nextSibling;
-        var record = getRecord("childList", target);
+        var record = getRecord("childList", e.target.parentNode);
         record.addedNodes = addedNodes;
         record.removedNodes = removedNodes;
         record.previousSibling = previousSibling;
         record.nextSibling = nextSibling;
-        forEachAncestorAndObserverEnqueueRecord(target, function(options) {
+        forEachAncestorAndObserverEnqueueRecord(e.relatedNode, function(options) {
           if (!options.childList) return;
           return record;
         });
@@ -341,8 +343,83 @@ if (typeof WeakMap === "undefined") {
     }
   };
   global.JsMutationObserver = JsMutationObserver;
-  if (!global.MutationObserver) global.MutationObserver = JsMutationObserver;
-})(this);
+  if (!global.MutationObserver) {
+    global.MutationObserver = JsMutationObserver;
+    JsMutationObserver._isPolyfilled = true;
+  }
+})(self);
+
+(function(scope) {
+  "use strict";
+  if (!window.performance) {
+    var start = Date.now();
+    window.performance = {
+      now: function() {
+        return Date.now() - start;
+      }
+    };
+  }
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function() {
+      var nativeRaf = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+      return nativeRaf ? function(callback) {
+        return nativeRaf(function() {
+          callback(performance.now());
+        });
+      } : function(callback) {
+        return window.setTimeout(callback, 1e3 / 60);
+      };
+    }();
+  }
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function() {
+      return window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || function(id) {
+        clearTimeout(id);
+      };
+    }();
+  }
+  var workingDefaultPrevented = function() {
+    var e = document.createEvent("Event");
+    e.initEvent("foo", true, true);
+    e.preventDefault();
+    return e.defaultPrevented;
+  }();
+  if (!workingDefaultPrevented) {
+    var origPreventDefault = Event.prototype.preventDefault;
+    Event.prototype.preventDefault = function() {
+      if (!this.cancelable) {
+        return;
+      }
+      origPreventDefault.call(this);
+      Object.defineProperty(this, "defaultPrevented", {
+        get: function() {
+          return true;
+        },
+        configurable: true
+      });
+    };
+  }
+  var isIE = /Trident/.test(navigator.userAgent);
+  if (!window.CustomEvent || isIE && typeof window.CustomEvent !== "function") {
+    window.CustomEvent = function(inType, params) {
+      params = params || {};
+      var e = document.createEvent("CustomEvent");
+      e.initCustomEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable), params.detail);
+      return e;
+    };
+    window.CustomEvent.prototype = window.Event.prototype;
+  }
+  if (!window.Event || isIE && typeof window.Event !== "function") {
+    var origEvent = window.Event;
+    window.Event = function(inType, params) {
+      params = params || {};
+      var e = document.createEvent("Event");
+      e.initEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable));
+      return e;
+    };
+    window.Event.prototype = origEvent.prototype;
+  }
+})(window.WebComponents);
 
 window.HTMLImports = window.HTMLImports || {
   flags: {}
@@ -353,19 +430,19 @@ window.HTMLImports = window.HTMLImports || {
   var useNative = Boolean(IMPORT_LINK_TYPE in document.createElement("link"));
   var hasShadowDOMPolyfill = Boolean(window.ShadowDOMPolyfill);
   var wrap = function(node) {
-    return hasShadowDOMPolyfill ? ShadowDOMPolyfill.wrapIfNeeded(node) : node;
+    return hasShadowDOMPolyfill ? window.ShadowDOMPolyfill.wrapIfNeeded(node) : node;
   };
   var rootDocument = wrap(document);
   var currentScriptDescriptor = {
     get: function() {
-      var script = HTMLImports.currentScript || document.currentScript || (document.readyState !== "complete" ? document.scripts[document.scripts.length - 1] : null);
+      var script = window.HTMLImports.currentScript || document.currentScript || (document.readyState !== "complete" ? document.scripts[document.scripts.length - 1] : null);
       return wrap(script);
     },
     configurable: true
   };
   Object.defineProperty(document, "_currentScript", currentScriptDescriptor);
   Object.defineProperty(rootDocument, "_currentScript", currentScriptDescriptor);
-  var isIE = /Trident|Edge/.test(navigator.userAgent);
+  var isIE = /Trident/.test(navigator.userAgent);
   function whenReady(callback, doc) {
     doc = doc || rootDocument;
     whenDocumentReady(function() {
@@ -395,26 +472,35 @@ window.HTMLImports = window.HTMLImports || {
   }
   function watchImportsLoad(callback, doc) {
     var imports = doc.querySelectorAll("link[rel=import]");
-    var loaded = 0, l = imports.length;
-    function checkDone(d) {
-      if (loaded == l && callback) {
-        callback();
+    var parsedCount = 0, importCount = imports.length, newImports = [], errorImports = [];
+    function checkDone() {
+      if (parsedCount == importCount && callback) {
+        callback({
+          allImports: imports,
+          loadedImports: newImports,
+          errorImports: errorImports
+        });
       }
     }
     function loadedImport(e) {
       markTargetLoaded(e);
-      loaded++;
+      newImports.push(this);
+      parsedCount++;
       checkDone();
     }
-    if (l) {
-      for (var i = 0, imp; i < l && (imp = imports[i]); i++) {
+    function errorLoadingImport(e) {
+      errorImports.push(this);
+      parsedCount++;
+      checkDone();
+    }
+    if (importCount) {
+      for (var i = 0, imp; i < importCount && (imp = imports[i]); i++) {
         if (isImportLoaded(imp)) {
-          loadedImport.call(imp, {
-            target: imp
-          });
+          parsedCount++;
+          checkDone();
         } else {
           imp.addEventListener("load", loadedImport);
-          imp.addEventListener("error", loadedImport);
+          imp.addEventListener("error", errorLoadingImport);
         }
       }
     } else {
@@ -464,11 +550,11 @@ window.HTMLImports = window.HTMLImports || {
       }
     })();
   }
-  whenReady(function() {
-    HTMLImports.ready = true;
-    HTMLImports.readyTime = new Date().getTime();
+  whenReady(function(detail) {
+    window.HTMLImports.ready = true;
+    window.HTMLImports.readyTime = new Date().getTime();
     var evt = rootDocument.createEvent("CustomEvent");
-    evt.initCustomEvent("HTMLImportsLoaded", true, true, {});
+    evt.initCustomEvent("HTMLImportsLoaded", true, true, detail);
     rootDocument.dispatchEvent(evt);
   });
   scope.IMPORT_LINK_TYPE = IMPORT_LINK_TYPE;
@@ -476,7 +562,7 @@ window.HTMLImports = window.HTMLImports || {
   scope.rootDocument = rootDocument;
   scope.whenReady = whenReady;
   scope.isIE = isIE;
-})(HTMLImports);
+})(window.HTMLImports);
 
 (function(scope) {
   var modules = [];
@@ -490,26 +576,29 @@ window.HTMLImports = window.HTMLImports || {
   };
   scope.addModule = addModule;
   scope.initializeModules = initializeModules;
-})(HTMLImports);
+})(window.HTMLImports);
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var CSS_URL_REGEXP = /(url\()([^)]*)(\))/g;
   var CSS_IMPORT_REGEXP = /(@import[\s]+(?!url\())([^;]*)(;)/g;
   var path = {
-    resolveUrlsInStyle: function(style) {
+    resolveUrlsInStyle: function(style, linkUrl) {
       var doc = style.ownerDocument;
       var resolver = doc.createElement("a");
-      style.textContent = this.resolveUrlsInCssText(style.textContent, resolver);
+      style.textContent = this.resolveUrlsInCssText(style.textContent, linkUrl, resolver);
       return style;
     },
-    resolveUrlsInCssText: function(cssText, urlObj) {
-      var r = this.replaceUrls(cssText, urlObj, CSS_URL_REGEXP);
-      r = this.replaceUrls(r, urlObj, CSS_IMPORT_REGEXP);
+    resolveUrlsInCssText: function(cssText, linkUrl, urlObj) {
+      var r = this.replaceUrls(cssText, urlObj, linkUrl, CSS_URL_REGEXP);
+      r = this.replaceUrls(r, urlObj, linkUrl, CSS_IMPORT_REGEXP);
       return r;
     },
-    replaceUrls: function(text, urlObj, regexp) {
+    replaceUrls: function(text, urlObj, linkUrl, regexp) {
       return text.replace(regexp, function(m, pre, url, post) {
         var urlPath = url.replace(/["']/g, "");
+        if (linkUrl) {
+          urlPath = new URL(urlPath, linkUrl).href;
+        }
         urlObj.href = urlPath;
         urlPath = urlObj.href;
         return pre + "'" + urlPath + "'" + post;
@@ -519,7 +608,7 @@ HTMLImports.addModule(function(scope) {
   scope.path = path;
 });
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var xhr = {
     async: true,
     ok: function(request) {
@@ -533,10 +622,14 @@ HTMLImports.addModule(function(scope) {
       request.open("GET", url, xhr.async);
       request.addEventListener("readystatechange", function(e) {
         if (request.readyState === 4) {
-          var locationHeader = request.getResponseHeader("Location");
           var redirectedUrl = null;
-          if (locationHeader) {
-            var redirectedUrl = locationHeader.substr(0, 1) === "/" ? location.origin + locationHeader : locationHeader;
+          try {
+            var locationHeader = request.getResponseHeader("Location");
+            if (locationHeader) {
+              redirectedUrl = locationHeader.substr(0, 1) === "/" ? location.origin + locationHeader : locationHeader;
+            }
+          } catch (e) {
+            console.error(e.message);
           }
           next.call(nextContext, !xhr.ok(request) && request, request.response || request.responseText, redirectedUrl);
         }
@@ -551,7 +644,7 @@ HTMLImports.addModule(function(scope) {
   scope.xhr = xhr;
 });
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var xhr = scope.xhr;
   var flags = scope.flags;
   var Loader = function(onLoad, onComplete) {
@@ -644,7 +737,7 @@ HTMLImports.addModule(function(scope) {
   scope.Loader = Loader;
 });
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var Observer = function(addCallback) {
     this.addCallback = addCallback;
     this.mo = new MutationObserver(this.handler.bind(this));
@@ -677,7 +770,7 @@ HTMLImports.addModule(function(scope) {
   scope.Observer = Observer;
 });
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var path = scope.path;
   var rootDocument = scope.rootDocument;
   var flags = scope.flags;
@@ -686,7 +779,7 @@ HTMLImports.addModule(function(scope) {
   var IMPORT_SELECTOR = "link[rel=" + IMPORT_LINK_TYPE + "]";
   var importParser = {
     documentSelectors: IMPORT_SELECTOR,
-    importsSelectors: [ IMPORT_SELECTOR, "link[rel=stylesheet]", "style", "script:not([type])", 'script[type="text/javascript"]' ].join(","),
+    importsSelectors: [ IMPORT_SELECTOR, "link[rel=stylesheet]:not([type])", "style:not([type])", "script:not([type])", 'script[type="application/javascript"]', 'script[type="text/javascript"]' ].join(","),
     map: {
       link: "parseLink",
       script: "parseScript",
@@ -737,8 +830,9 @@ HTMLImports.addModule(function(scope) {
       }
     },
     parseImport: function(elt) {
-      if (HTMLImports.__importsParsingHook) {
-        HTMLImports.__importsParsingHook(elt);
+      elt.import = elt.__doc;
+      if (window.HTMLImports.__importsParsingHook) {
+        window.HTMLImports.__importsParsingHook(elt);
       }
       if (elt.import) {
         elt.import.__importParsed = true;
@@ -777,6 +871,7 @@ HTMLImports.addModule(function(scope) {
     parseStyle: function(elt) {
       var src = elt;
       elt = cloneStyle(elt);
+      src.__appliedElement = elt;
       elt.__importElement = src;
       this.parseGeneric(elt);
     },
@@ -798,6 +893,8 @@ HTMLImports.addModule(function(scope) {
     trackElement: function(elt, callback) {
       var self = this;
       var done = function(e) {
+        elt.removeEventListener("load", done);
+        elt.removeEventListener("error", done);
         if (callback) {
           callback(e);
         }
@@ -821,9 +918,11 @@ HTMLImports.addModule(function(scope) {
           }
         }
         if (fakeLoad) {
-          elt.dispatchEvent(new CustomEvent("load", {
-            bubbles: false
-          }));
+          setTimeout(function() {
+            elt.dispatchEvent(new CustomEvent("load", {
+              bubbles: false
+            }));
+          });
         }
       }
     },
@@ -833,7 +932,9 @@ HTMLImports.addModule(function(scope) {
       script.src = scriptElt.src ? scriptElt.src : generateScriptDataUrl(scriptElt);
       scope.currentScript = scriptElt;
       this.trackElement(script, function(e) {
-        script.parentNode.removeChild(script);
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
         scope.currentScript = null;
       });
       this.addElementToDocument(script);
@@ -849,7 +950,7 @@ HTMLImports.addModule(function(scope) {
         for (var i = 0, l = nodes.length, p = 0, n; i < l && (n = nodes[i]); i++) {
           if (!this.isParsed(n)) {
             if (this.hasResource(n)) {
-              return nodeIsImport(n) ? this.nextToParseInDoc(n.import, n) : n;
+              return nodeIsImport(n) ? this.nextToParseInDoc(n.__doc, n) : n;
             } else {
               return;
             }
@@ -872,7 +973,7 @@ HTMLImports.addModule(function(scope) {
       return this.dynamicElements.indexOf(elt) >= 0;
     },
     hasResource: function(node) {
-      if (nodeIsImport(node) && node.import === undefined) {
+      if (nodeIsImport(node) && node.__doc === undefined) {
         return false;
       }
       return true;
@@ -906,7 +1007,7 @@ HTMLImports.addModule(function(scope) {
   scope.IMPORT_SELECTOR = IMPORT_SELECTOR;
 });
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var flags = scope.flags;
   var IMPORT_LINK_TYPE = scope.IMPORT_LINK_TYPE;
   var IMPORT_SELECTOR = scope.IMPORT_SELECTOR;
@@ -946,7 +1047,7 @@ HTMLImports.addModule(function(scope) {
           }
           this.documents[url] = doc;
         }
-        elt.import = doc;
+        elt.__doc = doc;
       }
       parser.parseNext();
     },
@@ -967,12 +1068,15 @@ HTMLImports.addModule(function(scope) {
   function isLinkRel(elt, rel) {
     return elt.localName === "link" && elt.getAttribute("rel") === rel;
   }
+  function hasBaseURIAccessor(doc) {
+    return !!Object.getOwnPropertyDescriptor(doc, "baseURI");
+  }
   function makeDocument(resource, url) {
     var doc = document.implementation.createHTMLDocument(IMPORT_LINK_TYPE);
     doc._URL = url;
     var base = doc.createElement("base");
     base.setAttribute("href", url);
-    if (!doc.baseURI) {
+    if (!doc.baseURI && !hasBaseURIAccessor(doc)) {
       Object.defineProperty(doc, "baseURI", {
         value: url
       });
@@ -1002,7 +1106,7 @@ HTMLImports.addModule(function(scope) {
   scope.importLoader = importLoader;
 });
 
-HTMLImports.addModule(function(scope) {
+window.HTMLImports.addModule(function(scope) {
   var parser = scope.parser;
   var importer = scope.importer;
   var dynamic = {
@@ -1039,23 +1143,14 @@ HTMLImports.addModule(function(scope) {
   if (scope.useNative) {
     return;
   }
-  if (isIE && typeof window.CustomEvent !== "function") {
-    window.CustomEvent = function(inType, params) {
-      params = params || {};
-      var e = document.createEvent("CustomEvent");
-      e.initCustomEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable), params.detail);
-      return e;
-    };
-    window.CustomEvent.prototype = window.Event.prototype;
-  }
   initializeModules();
   var rootDocument = scope.rootDocument;
   function bootstrap() {
-    HTMLImports.importer.bootDocument(rootDocument);
+    window.HTMLImports.importer.bootDocument(rootDocument);
   }
   if (document.readyState === "complete" || document.readyState === "interactive" && !window.attachEvent) {
     bootstrap();
   } else {
     document.addEventListener("DOMContentLoaded", bootstrap);
   }
-})(HTMLImports);
+})(window.HTMLImports);

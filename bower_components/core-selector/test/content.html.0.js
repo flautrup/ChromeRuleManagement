@@ -1,9 +1,9 @@
 
-  
+
     var s = document.querySelector('test-core-selector');
 
     suite('content', function() {
-      
+
       test('get selected', function(done) {
         asyncPlatformFlush(function() {
           // check selected class
@@ -21,11 +21,11 @@
           done();
         });
       });
-      
+
       test('get items', function() {
         assert.equal(s.$.selector.items.length, s.children.length);
       });
-      
+
       test('activate event', function(done) {
         s.children[2].dispatchEvent(new CustomEvent('tap', {bubbles: true}));
         asyncPlatformFlush(function() {
@@ -34,7 +34,7 @@
           done();
         });
       });
-      
+
       test('add item dynamically', function(done) {
         var item = document.createElement('div');
         item.id = 'item4';

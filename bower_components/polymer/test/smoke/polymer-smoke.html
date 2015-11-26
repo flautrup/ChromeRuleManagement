@@ -1,0 +1,134 @@
+<!DOCTYPE html><!--
+@license
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><html><head><link rel="import" href="../../polymer.html">
+
+</head><body><x-trivial></x-trivial>
+
+<style>
+
+  x-trivial {
+    display: block;
+    padding: 8px;
+  }
+
+</style>
+
+<script src="polymer-smoke.html.0.js"></script>
+
+<!----------------------------------------------------------------------------->
+
+<x-has-template></x-has-template>
+
+<style>
+
+  x-has-template {
+    display: block;
+    padding: 8px;
+  }
+
+</style>
+
+<template>
+  <i>Hey</i>, is this template <b>on</b>?  
+</template>
+
+<script src="polymer-smoke.html.1.js"></script>
+
+<!----------------------------------------------------------------------------->
+
+<x-has-projection>content</x-has-projection>
+
+<style>
+
+  x-has-projection {
+    display: block;
+    padding: 8px;
+  }
+
+</style>
+
+<template>
+  <i>Hey</i>, is this <content></content> <b>on</b>?  
+</template>
+
+<script src="polymer-smoke.html.2.js"></script>
+
+<!----------------------------------------------------------------------------->
+
+<x-has-reprojection>reprojection</x-has-reprojection>
+
+<style>
+
+  x-has-reprojection {
+    display: block;
+  }
+
+</style>
+
+<template>
+  <x-has-projection><content></content></x-has-projection>
+</template>
+
+<script src="polymer-smoke.html.3.js"></script>
+
+<!----------------------------------------------------------------------------->
+
+<div is="x-extended-div"></div>
+
+<style>
+
+  [is=x-extended-div] {
+    display: block;
+    padding: 8px;
+  }
+
+</style>
+
+<template>
+  <i>Hey</i>, is this extension <b>on</b>?  
+</template>
+
+<script src="polymer-smoke.html.4.js"></script>
+
+<!----------------------------------------------------------------------------->
+
+<x-annotated></x-annotated>
+
+<style>
+
+  x-annotated {
+    display: block;
+    padding: 8px;
+  }
+
+</style>
+
+<template>
+  <i>Hey</i>, is this <span id="kind"></span> <b>on</b>?  
+</template>
+
+<script src="polymer-smoke.html.5.js"></script>
+
+<!----------------------------------------------------------------------------->
+
+<x-attributes attribute="attribute"></x-attributes>
+
+<style>
+
+  x-attributes {
+    padding: 8px;
+  }
+
+</style>
+
+<template>
+  <i>Hey</i>, is this <span id="kind"></span> <b>on</b>?  
+</template>
+
+<script src="polymer-smoke.html.6.js"></script></body></html>

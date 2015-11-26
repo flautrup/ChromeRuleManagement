@@ -101,7 +101,7 @@
       forceNarrow: false,
       
       /**
-       * If true, swipe from the edge is disable.
+       * If true, swipe from the edge is disabled.
        *
        * @attribute disableEdgeSwipe
        * @type boolean

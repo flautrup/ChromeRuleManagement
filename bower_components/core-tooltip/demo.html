@@ -1,6 +1,6 @@
 <!--
     @license
-    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
     This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
     The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
     The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
@@ -83,7 +83,8 @@
     }
 
     core-tooltip.fancy:hover::shadow .core-tooltip,
-    core-tooltip.fancy:focus::shadow .core-tooltip {
+    core-tooltip.fancy:focus::shadow .core-tooltip,
+    core-tooltip.fancy[show]::shadow .core-tooltip {
       opacity: 1;
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
@@ -102,19 +103,19 @@
         <div class="example">
 
           <core-tooltip label="position=&quot;left&quot;" position="left">
-            <core-icon-button icon="drawer"></core-icon-button>
+            <core-icon-button icon="polymer"></core-icon-button>
           </core-tooltip>
 
           <core-tooltip label="position=&quot;top&quot;" position="top">
-            <core-icon-button icon="drawer"></core-icon-button>
+            <core-icon-button icon="polymer"></core-icon-button>
           </core-tooltip>
 
           <core-tooltip label="position=&quot;bottom&quot;" position="bottom">
-            <core-icon-button icon="drawer"></core-icon-button>
+            <core-icon-button icon="polymer"></core-icon-button>
           </core-tooltip>
 
           <core-tooltip label="position=&quot;right&quot;" position="right">
-            <core-icon-button icon="drawer"></core-icon-button>
+            <core-icon-button icon="polymer"></core-icon-button>
           </core-tooltip>
 
         </div>

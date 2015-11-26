@@ -88,6 +88,50 @@
       });
     });
 
+    test('char-counter is visible', function() {
+      var nodes = cloneAndAppendTemplate('char-counter');
+      var counter = nodes.d.querySelector('.counter');
+      assert.ok(nodes.i.maxLength != 0);
+      assert.ok(nodes.d.error == "");
+
+      nodes.i.id="input";
+      counter.target = "input";
+      counter.ready();
+
+      flush(function() {
+        assert.ok(!counter.shadowRoot.querySelector('.counter-text').hidden);
+      });
+    });
+
+    test('char-counter is invalid when input exceeds maxLength', function() {
+      var nodes = cloneAndAppendTemplate('char-counter');
+      var counter = nodes.d.querySelector('.counter');
+      assert.ok(nodes.i.maxLength == 5);
+
+      nodes.i.id = "input";
+      counter.target = "input";
+      counter.ready();
+
+
+      flush(function() {
+        nodes.i.value = "nanananabatman";
+        var e = new Event('input', {
+          bubbles: true
+        });
+        nodes.i.dispatchEvent(e);
+
+        flush(function() {
+          assert.ok(counter._isCounterInvalid);
+          assert.ok(nodes.d.isInvalid);
+
+          assert.strictEqual(
+            CoreStyle.g.paperInput.invalidColor,
+            counter.shadowRoot.querySelector('.counter-text').color);
+          done();
+        });
+      });
+    });
+
     suite('a11y', function() {
 
       test('aria-label set on input', function() {

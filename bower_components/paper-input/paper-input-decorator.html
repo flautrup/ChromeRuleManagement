@@ -54,7 +54,7 @@ To add custom styling to only some elements, use these selectors:
         background-color: green;
     }
 
-    paper-input-decorator[focused] /deep/ .floating-label .label-text {
+    paper-input-decorator[focused] /deep/ .floated-label .label-text {
         /* floating label color when the input is focused */
         color: orange;
     }
@@ -169,7 +169,7 @@ conflict with this element.
 
 </core-style>
 
-<polymer-element name="paper-input-decorator" layout="" vertical="" on-transitionend="{{transitionEndAction}}" on-webkittransitionend="{{transitionEndAction}}" on-input="{{inputAction}}" on-down="{{downAction}}" on-tap="{{tapAction}}">
+<polymer-element name="paper-input-decorator" layout="" vertical="" on-transitionend="{{transitionEndAction}}" on-webkittransitionend="{{transitionEndAction}}" on-input="{{inputAction}}" on-down="{{downAction}}" on-tap="{{tapAction}}" on-char-counter-error="{{charCounterErrorAction}}">
 
   <template>
 
@@ -188,7 +188,7 @@ conflict with this element.
         <span id="labelText" class="label-text" invisible?="{{!_labelVisible}}" animated?="{{labelAnimated}}">{{label}}</span>
       </div>
 
-      <content></content>
+      <content select="*:not(.counter)"></content>
 
     </div>
 
@@ -197,9 +197,14 @@ conflict with this element.
       <div id="focusedUnderline" class="focused-underline" fit="" invisible?="{{!underlineVisible}}" animated?="{{underlineAnimated}}"></div>
     </div>
 
-    <div class="error" layout="" horizontal="" center="" hidden?="{{!isInvalid}}">
-      <div class="error-text" flex="" auto="" role="alert" aria-hidden="{{!isInvalid}}">{{error}}</div>
-      <core-icon class="error-icon" icon="warning"></core-icon>
+    <div class="footer" layout="" horizontal="" end-justified="">
+      <div class="error" flex="" layout="" horizontal="" center="" hidden?="{{!isInvalid}}">
+        <div class="error-text" flex="" auto="" role="alert" aria-hidden="{{!isInvalid}}">{{error}}</div>
+        <core-icon id="errorIcon" class="error-icon" icon="warning"></core-icon>
+      </div>
+      <div aria-hidden="true">
+        <content select=".counter"></content>
+      </div>
     </div>
 
   </template>

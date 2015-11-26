@@ -1,0 +1,11 @@
+
+
+    Polymer({
+
+      behaviors: [
+        Polymer.BehaviorA
+      ]
+
+    });
+
+  

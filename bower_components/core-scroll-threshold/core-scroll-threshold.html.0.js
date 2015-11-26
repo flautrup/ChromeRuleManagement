@@ -1,7 +1,7 @@
 
 
   Polymer({
-    
+
     publish: {
 
       /**
@@ -72,14 +72,22 @@
       this._boundScrollHandler = this.checkThreshold.bind(this);
     },
 
-    setup: function() {
+    detached: function() {
       // Remove listener for any previous scroll target
-      if (this._scrollTarget && (this._scrollTarget != this.target)) {
-        this._scrollTarget.removeEventListener(this._boundScrollHandler);
+      if (this._scrollTarget) {
+        this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
+      }
+    },
+
+    setup: function() {
+      var target = this.scrollTarget || this;
+
+      // Remove listener for any previous scroll target
+      if (this._scrollTarget && (this._scrollTarget != target)) {
+        this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
       }
 
       // Add listener for new scroll target
-      var target = this.scrollTarget || this;
       if (target) {
         this._scrollTarget = target;
         this._scrollTarget.addEventListener('scroll', this._boundScrollHandler);
@@ -100,21 +108,35 @@
       }
       if (!this.lowerThreshold) {
         this.lowerTriggered = false;
-      }      
+      }
     },
 
     checkThreshold: function(e) {
       var top = this._scrollTarget[this.scrollPosition];
-      if (!this.upperTriggered && this.upperThreshold != null) {
+      if (!this.upperTriggered && this.upperThreshold !== null) {
         if (top < this.upperThreshold) {
+
+          // No longer fire scroll events if there's no lower threshold or it
+          // has been triggered.
+          if (this.lowerThreshold === null || this.lowerTriggered) {
+            this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
+          }
+
           this.upperTriggered = true;
           this.fire('upper-trigger');
         }
       }
-      if (this.lowerThreshold != null) {
+      if (!this.lowerTriggered && this.lowerThreshold !== null) {
         var bottom = top + this._scrollTarget[this.sizeExtent];
         var size = this._scrollTarget[this.scrollExtent];
-        if (!this.lowerTriggered && (size - bottom) < this.lowerThreshold) {
+        if ((size - bottom) < this.lowerThreshold) {
+
+          // No longer fire scroll events if there's no upper threshold or it
+          // has been triggered.
+          if (this.upperThreshold === null || this.upperTriggered) {
+            this._scrollTarget.removeEventListener('scroll', this._boundScrollHandler);
+          }
+
           this.lowerTriggered = true;
           this.fire('lower-trigger');
         }
@@ -132,9 +154,10 @@
           this.clearUpper();
         }.bind(this));
       } else {
-        requestAnimationFrame(function() {
+        this.async(function() {
           this.upperTriggered = false;
-        }.bind(this));
+          this._scrollTarget.addEventListener('scroll', this._boundScrollHandler);
+        });
       }
     },
 
@@ -149,9 +172,10 @@
           this.clearLower();
         }.bind(this));
       } else {
-        requestAnimationFrame(function() {
+        this.async(function() {
           this.lowerTriggered = false;
-        }.bind(this));
+          this._scrollTarget.addEventListener('scroll', this._boundScrollHandler);
+        });
       }
     },
 
@@ -160,7 +184,7 @@
         listener.call(this, observer, mutations);
         observer.disconnect();
       }.bind(this));
-      observer.observe(this._scrollTarget, {attributes:true, childList: true, subtree: true});
+      observer.observe(this._scrollTarget, {attributes: true, childList: true, subtree: true});
     }
 
   });

@@ -1,0 +1,21 @@
+<html><head><script src="configure-elements.html.0.js"></script>
+
+</head><body><template>
+  <span id="content">{{content}}</span>
+</template>
+<script src="configure-elements.html.1.js"></script>
+
+<template>
+  <span id="content">{{content}}</span>
+</template>
+<script src="configure-elements.html.2.js"></script>
+
+<template>
+  <x-configure-gchild id="gchild" content="{{content}}" object="{{object}}"></x-configure-gchild>
+</template>
+<script src="configure-elements.html.3.js"></script>
+
+<template>
+  <x-configure-child id="child" content="{{content}}" object="{{object.goo}}"></x-configure-child>
+</template>
+<script src="configure-elements.html.4.js"></script></body></html>

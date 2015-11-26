@@ -1,26 +1,26 @@
 
 
-  Polymer('core-collapse', {
+  Polymer('core-collapse', Polymer.mixin({
 
     /**
      * Fired when the `core-collapse`'s `opened` property changes.
-     * 
+     *
      * @event core-collapse-open
      */
 
     /**
      * Fired when the target element has been resized as a result of the opened
      * state changing.
-     * 
+     *
      * @event core-resize
      */
 
     /**
-     * The target element that will be opened when the `core-collapse` is 
+     * The target element that will be opened when the `core-collapse` is
      * opened. If unspecified, the `core-collapse` itself is the target.
      *
      * @attribute target
-     * @type object
+     * @type Object
      * @default null
      */
     target: null,
@@ -54,7 +54,7 @@
 
     /**
      * If true, the size of the target element is fixed and is set
-     * on the element.  Otherwise it will try to 
+     * on the element.  Otherwise it will try to
      * use auto to determine the natural size to use
      * for collapsing/expanding.
      *
@@ -63,11 +63,11 @@
      * @default false
      */
     fixedSize: false,
-    
+
     /**
      * By default the collapsible element is set to overflow hidden. This helps
      * avoid element bleeding outside the region and provides consistent overflow
-     * style across opened and closed states. Set this property to true to allow 
+     * style across opened and closed states. Set this property to true to allow
      * the collapsible element to overflow when it's opened.
      *
      * @attribute allowOverflow
@@ -79,7 +79,7 @@
     created: function() {
       this.transitionEndListener = this.transitionEnd.bind(this);
     },
-    
+
     ready: function() {
       this.target = this.target || this;
     },
@@ -90,10 +90,15 @@
       });
     },
 
+    attached: function() {
+      this.resizerAttachedHandler();
+    },
+
     detached: function() {
       if (this.target) {
         this.removeListeners(this.target);
       }
+      this.resizableDetachedHandler();
     },
 
     targetChanged: function(old) {
@@ -155,13 +160,14 @@
       this.toggleOpenedStyle(this.opened);
       this.toggleClosedClass(!this.opened);
       this.asyncFire('core-resize', null, this.target);
+      this.notifyResize();
     },
 
     toggleClosedClass: function(closed) {
       this.hasClosedClass = closed;
       this.target.classList.toggle('core-collapse-closed', closed);
     },
-    
+
     toggleOpenedStyle: function(opened) {
       this.target.style.overflow = this.allowOverflow && opened ? '' : 'hidden';
     },
@@ -183,10 +189,11 @@
         return;
       }
       if (!this.isTargetReady) {
-        this.targetChanged(); 
+        this.targetChanged();
       }
       this.horizontalChanged();
       this[this.opened ? 'show' : 'hide']();
+      this.notifyResize();
     },
 
     calcSize: function() {
@@ -236,5 +243,5 @@
       });
     }
 
-  });
+  }, Polymer.CoreResizer));
 

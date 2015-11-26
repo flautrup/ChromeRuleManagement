@@ -55,6 +55,15 @@
      * @default false
      */
     hideScrollButton: false,
+    
+    /**
+     * If true, the tabs are aligned to bottom (the selection bar appears at the top).
+     *
+     @attribute alignBottom
+     @type boolean
+     @default false
+     */
+    alignBottom: false,
 
     eventDelegates: {
       'core-resize': 'resizeHandler'
