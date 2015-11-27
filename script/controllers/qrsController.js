@@ -112,7 +112,14 @@ $scope.loadRulePackage = function (findRulePackage) {
 //      Read rule with ID if exsist update if not create
 //      If rule contains custom properties do the same.
 //      i.e. ask for custom property if exsist update else create.
-$scope.uploadRulePackage = function (findRuleName) {
+$scope.uploadRulePackage = function (rulePackageObj) {
+  console.log(rulePackageObj);
+
+  //Remove customPropName and customPropertyObj from rule before storing.
+
+  for(var count=0; count<rulePackageObj.ruleList.length;count++) {
+    qrsRules.save(rulePackageObj.ruleList[count]);
+  }
 };
 
 //Delete rulepackage
