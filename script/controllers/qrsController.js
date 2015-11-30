@@ -52,7 +52,7 @@ $scope.storeCustomPropertyInRule=function(index,customPropName) {
    var tmpCustObj=qrsCustProp.get({custPropName: customPropName});
    //Connect custom property definitions to rules that use them
    tmpCustObj.$promise.then (function () {
-      serverRuleList[index].customPropertyObj.push(tmpCustObj);
+      serverRuleList[index].customPropertyObj.push(tmpCustObj[0]);
           console.log(tmpCustObj);
     });
 };
@@ -117,8 +117,29 @@ $scope.uploadRulePackage = function (rulePackageObj) {
 
   //Remove customPropName and customPropertyObj from rule before storing.
 
-  for(var count=0; count<rulePackageObj.ruleList.length;count++) {
-    qrsRules.save(rulePackageObj.ruleList[count]);
+
+  for(var rulecount=0; rulecount<rulePackageObj.ruleList.length;rulecount++) {
+    var rule = JSON.parse(JSON.stringify(rulePackageObj.ruleList[rulecount]));
+
+    delete rule.customPropertyObj;
+    delete rule.customPropertyList;
+    delete rule.id;
+
+
+    qrsRules.save(rule);
+
+    //Create custom property if it already do not exsist.
+    for(var custPropCount=0; custPropCount<rulePackageObj.ruleList[rulecount].customPropertyObj.length; custPropCount++) {
+      var customProperty = JSON.parse(JSON.stringify(rulePackageObj.ruleList[rulecount].customPropertyObj[custPropCount]));
+
+      //Check if it exsists
+      delete customProperty.id;
+
+      //Todo do not store which resources it is connected to because of that it is only returned with full object
+      qrsCustProp.save(customProperty);
+
+    }
+
   }
 };
 

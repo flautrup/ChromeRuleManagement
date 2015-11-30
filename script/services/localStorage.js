@@ -7,8 +7,8 @@ service.factory('localStorage', function (){
     get: function () {
       chrome.storage.local.get({'localpackagelist': []}, function (result){
         localpackagelist=result.localpackagelist;
+        return localpackagelist;
       });
-      return localpackagelist;
     },
     set: function (rulePackage) {
       localpackagelist.push(rulePackage);

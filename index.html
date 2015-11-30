@@ -57,7 +57,7 @@
             <div class="name">{{serverRule.name}}</div>
             <div class="description">{{serverRule.comment}}</div>
             <div class="header">Custom properties</div>
-            <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop[0].name}}</div>
+            <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
             <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
           </div>
         </core-item>
@@ -75,7 +75,7 @@
                 <div class="name">{{packageRule.name}}</div>
                 <div class="description">{{packageRule.comment}}</div>
                 <div class="header">Custom properties</div>
-                <div ng-repeat="customprop in packageRule.customPropertyObj">{{customprop[0].name}}></div>
+                <div ng-repeat="customprop in packageRule.customPropertyObj">{{customprop.name}}</div>
                 <core-icon-button ng-click="toogleRule(packageRule)" icon="done">{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</core-icon-button>
             </div>
           </core-item>
