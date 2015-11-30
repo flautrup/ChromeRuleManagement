@@ -4,10 +4,9 @@ service.factory('localStorage', function (){
   var localpackagelist = [];
 
   return {
-    get: function () {
+    get: function ($scope) {
       chrome.storage.local.get({'localpackagelist': []}, function (result){
-        localpackagelist=result.localpackagelist;
-        return localpackagelist;
+        $scope.packageList=result.localpackagelist;
       });
     },
     set: function (rulePackage) {

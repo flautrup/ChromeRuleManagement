@@ -43,7 +43,7 @@ service.controller("qrsController", ["$scope","$http",  "qrsRules", "qrsCustProp
    $scope.serverRuleList=serverRuleList;
 
   //Get packages in local storage
-   $scope.packageList=localStorage.get();
+  localStorage.get($scope);
 
 };
 
