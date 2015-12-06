@@ -1,9 +1,9 @@
 //Service to work with custom properties
 service.factory('qrsCustProp', function($resource) {
-  return $resource(SERVER + "qrs/custompropertydefinition/:custPropID?xrfkey=" + XRFKEY, {}, {
+  return $resource(":server/qrs/custompropertydefinition/:custPropID?xrfkey=" + XRFKEY, {}, {
     'get': {
       method: 'GET',
-      url: SERVER + "qrs/custompropertydefinition/full?filter=name eq ':custPropName'&xrfkey=" + XRFKEY,
+      url: ":server/qrs/custompropertydefinition/full?filter=name eq ':custPropName'&xrfkey=" + XRFKEY,
       isArray: true
     },
     'save': {
@@ -11,7 +11,7 @@ service.factory('qrsCustProp', function($resource) {
     },
     'query': {
       method: 'GET',
-      url: SERVER + "qrs/custompropertydefinition/full?xrfkey=" + XRFKEY,
+      url: ":server/qrs/custompropertydefinition/full?xrfkey=" + XRFKEY,
       isArray: true
     },
     'remove': {
