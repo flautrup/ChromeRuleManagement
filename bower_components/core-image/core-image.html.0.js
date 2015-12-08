@@ -1,7 +1,7 @@
 
 
   Polymer({
-    
+
     publish: {
 
       /**
@@ -25,8 +25,8 @@
       load: true,
 
       /**
-       * Sets a sizing option for the image.  Valid values are `contain` (full 
-       * aspect ratio of the image is contained within the element and 
+       * Sets a sizing option for the image.  Valid values are `contain` (full
+       * aspect ratio of the image is contained within the element and
        * letterboxed) or `cover` (image is cropped in order to fully cover the
        * bounds of the element), or `null` (default: image takes natural size).
        *
@@ -48,7 +48,8 @@
 
       /**
        * When `true`, any change to the `src` property will cause the `placeholder`
-       * image to be shown until the 
+       * image (or background color, if no `placeholder` is specified) to be shown
+       * until the image has loaded.
        *
        * @attribute preload
        * @type boolean
@@ -65,6 +66,19 @@
        * @default null
        */
       placeholder: null,
+
+      /**
+       * ARIA role for this element. It defaults to `img` since this element is
+       * intended to be behave like an `<img>`.
+       *
+       * @attribute role
+       * @type string
+       * @default "img"
+       */
+      role: {
+        reflect: true,
+        value: 'img'
+      },
 
       /**
        * When `preload` is true, setting `fade` to true will cause the image to

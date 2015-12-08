@@ -173,11 +173,6 @@
       return Boolean(a.alt) == Boolean(b.alt) && Boolean(a.ctrl) == Boolean(b.ctrl) && Boolean(a.shift) == Boolean(b.shift) && a.key === b.key;
     }
 
-    /**
-     * Fired when a keycombo in `keys` is pressed.
-     *
-     * @event keys-pressed
-     */
     function processKeys(ev) {
       var current = keyboardEventToKey(ev);
       for (var i = 0, dk; i < this._desiredKeys.length; i++) {

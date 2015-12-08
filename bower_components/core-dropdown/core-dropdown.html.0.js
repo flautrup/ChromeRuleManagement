@@ -46,7 +46,7 @@
        * The horizontal alignment of the popup relative to `relatedTarget`. `left`
        * means the left edges are aligned together. `right` means the right edges
        * are aligned together.
-       * 
+       *
        * Accepted values: 'left', 'right'
        *
        * @attribute halign
@@ -66,7 +66,7 @@
        * @type String
        * @default 'top'
        */
-      valign: 'top',
+      valign: 'top'
 
     },
 
@@ -101,6 +101,8 @@
         style[dims.position.v] = null;
         dims.position.v_by = null;
       }
+
+      var style = this.sizingTarget.style;
       style.width = null;
       style.height = null;
       this.super();

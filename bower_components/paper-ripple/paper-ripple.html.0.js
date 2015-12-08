@@ -239,7 +239,7 @@
           // Declare the next wave that has mouse down to be mouse'ed up.
           var wave = this.waves[i];
           if (wave.isMouseDown) {
-            wave.isMouseDown = false
+            wave.isMouseDown = false;
             wave.mouseUpStart = now();
             wave.mouseDownStart = 0;
             wave.tUp = 0.0;

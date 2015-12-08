@@ -1,6 +1,6 @@
 
 
-  Polymer({
+  var p = {
 
     overlayListeners: {
       'core-overlay-open': 'openAction',
@@ -11,5 +11,8 @@
       this.opened = false;
     }
 
-  });
+  };
+
+  Polymer.mixin2(p, Polymer.CoreFocusable);
+  Polymer(p);
 

@@ -76,7 +76,7 @@
         this.tipElement = null;
 
         for (var i = 0, el; el = this.$.c.getDistributedNodes()[i]; ++i) {
-          if (el.hasAttribute && el.hasAttribute('tip')) {
+          if (el.hasAttribute && el.hasAttribute(this.tipAttribute)) {
             this.tipElement = el;
             break;
           }

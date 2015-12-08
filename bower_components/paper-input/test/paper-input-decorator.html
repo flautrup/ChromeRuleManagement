@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <link href="../paper-input-decorator.html" rel="import">
   <link href="../paper-autogrow-textarea.html" rel="import">
+  <link href="../paper-char-counter.html" rel="import">
 
   <style>
     paper-input-decorator {
@@ -77,7 +78,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <br>
   </template>
 
+  <template id="char-counter">
+    <paper-input-decorator label="character counter">
+      <input is="core-input" maxlength="5">
+      <paper-char-counter class="counter"></paper-char-counter>
+    </paper-input-decorator>
+    <br>
+  </template>
+
   <script src="paper-input-decorator.html.0.js"></script>
+
 
 
 </body></html>

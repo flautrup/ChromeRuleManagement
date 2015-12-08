@@ -132,6 +132,9 @@
       if (!this.dragging) {
         this.value = this.immediateValue;
       }
+      if (this.editable) {
+        this.$.input.value = this.immediateValue;
+      }
       this.fire('immediate-value-change');
     },
 

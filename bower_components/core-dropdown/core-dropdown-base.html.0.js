@@ -81,8 +81,10 @@
       this.opened = !!e.detail;
     },
 
-    toggleOverlay: function() {
-      this.opened = !this.opened;
+    toggleOverlay: function(event) {
+      if (!this.dropdown.contains(event.target) && !this.disabled) {
+        this.opened = !this.opened;
+      }
     }
 
   });

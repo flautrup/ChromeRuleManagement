@@ -1,0 +1,1 @@
+console.perf && console.perf();

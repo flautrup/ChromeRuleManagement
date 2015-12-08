@@ -182,6 +182,10 @@
        * @return {boolean} True if the input is valid.
        */
       validate: function() {
+        if (!this.input) {
+          return true;
+        }
+
         this.isInvalid = !this.input.validity.valid;
         return this.input.validity.valid;
       },
@@ -309,6 +313,14 @@
         if (this._labelVisible) {
           this.input.placeholder = this.label;
         }
+      },
+
+      charCounterErrorAction: function(e) {
+        this.isInvalid = e.detail.hasError;
+
+        // If the allowed characters have been exceeded, show either the error
+        // icon, or the character counter, but not both.
+        this.$.errorIcon.hidden = e.detail.hideErrorIcon;
       }
 
     });

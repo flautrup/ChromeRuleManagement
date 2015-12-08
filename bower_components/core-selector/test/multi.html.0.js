@@ -55,7 +55,7 @@
           });
         });
       });
-      
+
       test('toggle multi to false', function(done) {
         // set selected
         s.selected = [0, 2];

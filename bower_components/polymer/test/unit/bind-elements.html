@@ -1,0 +1,34 @@
+<html><head></head><body><template>
+  <div id="boundChild" value="{{value}}" negvalue="{{!bool}}" attrvalue$="{{attrvalue}}" computedvalue="{{computedvalue}}" computedvaluetwo="{{computedvaluetwo}}" camel-case="{{value}}" computed-inline="{{computeInline(value,add, divide)}}" computed-inline2="{{computeInline(value, add,divide)}}" computedattribute$="{{computeInline(value, add,divide)}}" style$="{{boundStyle}}" data-id$="{{dataSetId}}" custom-event-value="{{customEventValue::custom}}" custom-event-object-value="{{customEventObject.value::change}}">
+    Test
+    </div>
+</template>
+<script src="bind-elements.html.0.js"></script>
+
+<template>
+  <x-basic id="basic1" value="{{boundvalue}}" notifyingvalue="{{boundnotifyingvalue}}" camel-notifying-value="{{boundnotifyingvalue}}" computedvalue="{{boundcomputedvalue}}" computednotifyingvalue="{{boundcomputednotifyingvalue}}" readonlyvalue="{{boundreadonlyvalue}}">
+  </x-basic>
+  <x-basic id="basic2" value="[[boundvalue]]" notifyingvalue="[[boundnotifyingvalue]]" computedvalue="[[boundcomputedvalue]]" computednotifyingvalue="[[boundcomputednotifyingvalue]]">
+  </x-basic>
+</template>
+<script src="bind-elements.html.1.js"></script>
+
+
+<script src="bind-elements.html.2.js"></script>
+
+<script src="bind-elements.html.3.js"></script>
+
+<dom-module id="x-notifies2">
+  <template>
+    <x-notifies1 id="notifies1" notifies="{{shouldChange}}"></x-notifies1>
+  </template>
+</dom-module>
+<script src="bind-elements.html.4.js"></script>
+
+<dom-module id="x-notifies3">
+  <template>
+    <x-notifies2 id="notifies2" notifies="{{shouldNotChange}}"></x-notifies2>
+  </template>
+</dom-module>
+<script src="bind-elements.html.5.js"></script>
+</body></html>

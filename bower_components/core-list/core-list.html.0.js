@@ -363,6 +363,7 @@
       if (getComputedStyle(this._target).position == 'static') {
         this._target.style.position = 'relative';
       }
+      this._target.style.boxSizing = this._target.style.mozBoxSizing = 'border-box';
       this.style.overflowY = (target == this) ? 'auto' : null;
     },
 
@@ -431,9 +432,9 @@
         if (!this.width) {
           throw 'Grid requires the `width` property to be set';
         }
-        this._rowFactor = Math.floor(this._target.offsetWidth / this.width) || 1;
         var cs = getComputedStyle(this._target);
         var padding = parseInt(cs.paddingLeft || 0) + parseInt(cs.paddingRight || 0);
+        this._rowFactor = Math.floor((this._target.offsetWidth - padding) / this.width) || 1;
         this._rowMargin = (this._target.offsetWidth - (this._rowFactor * this.width) - padding) / 2;
       } else {
         this._rowFactor = 1;

@@ -70,6 +70,16 @@ Keys Syntax Grammar:
 @group Core Elements
 @element core-a11y-keys
 @homepage github.io
+--><!--
+Fired when a keycombo in `keys` is pressed.
+
+@event keys-pressed
+@param {Object} detail
+  @param {boolean} detail.shift true if shift key is pressed
+  @param {boolean} detail.ctrl true if ctrl key is pressed
+  @param {boolean} detail.meta true if meta key is pressed
+  @param {boolean} detail.alt true if alt key is pressed
+  @param {String} detail.key the normalized key
 --><html><head><link rel="import" href="../polymer/polymer.html">
 
 <style shim-shadowdom="">

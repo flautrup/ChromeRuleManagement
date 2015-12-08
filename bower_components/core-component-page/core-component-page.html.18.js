@@ -1,1 +1,1 @@
-Polymer("core-item",{});
+Polymer("core-menu");

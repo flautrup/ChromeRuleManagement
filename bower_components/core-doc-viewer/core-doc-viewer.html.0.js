@@ -52,7 +52,7 @@
             if (c.name === this.route.split('.')[0]) {
               this.data = c;
               this.route = '';
-              return;
+              return true;
             }
           }, this);
         }
