@@ -13,7 +13,9 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //Get the list of rules, parse for custom properties and fetch the custom properies and store with rule
   $scope.list = function() {
     //GET rules
-    serverRuleList = qrsRules.query({server: $scope.server},function() {
+    serverRuleList = qrsRules.query({
+      server: $scope.server
+    }, function() {
       console.log(serverRuleList);
     });
 
@@ -49,7 +51,8 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
 
   //Store custom property in rule
   $scope.storeCustomPropertyInRule = function(index, customPropName) {
-    var tmpCustObj = qrsCustProp.get({server: $scope.server,
+    var tmpCustObj = qrsCustProp.get({
+      server: $scope.server,
       custPropName: customPropName
     });
     //Connect custom property definitions to rules that use them
@@ -109,6 +112,16 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     document.querySelector('paper-tabs').selected = "1";
   };
 
+  //Export packageList with all content
+  $scope.exportPackageList = function () {
+    localStorage.export();
+  }
+
+  //Import packageList with and add to current list
+  $scope.importPackageList = function () {
+    localStorage.import($scope);
+  }
+
   //Upload rulepackage to server
   //Note:
   //      Read rule with name if exsist dissable and  create new with pkg prefix
@@ -134,7 +147,8 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
         delete tmpRule.customPropertyList;
         delete tmpRule.id;
         tmpRule.modifiedDate = new Date().toISOString();
-        qrsRules.update({server: $scope.server,
+        qrsRules.update({
+          server: $scope.server,
           ruleId: exsistingRule.id
         }, tmpRule);
       }
@@ -143,13 +157,15 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
       delete rule.id;
       rule.name = rule.name + "_pkg"
 
-      qrsRules.save({server: $scope.server}, rule);
+      qrsRules.save({
+        server: $scope.server
+      }, rule);
 
       //Create a list of unique custom properties in rule package
       for (var custPropCount = 0; custPropCount < rulePackageObj.ruleList[rulecount].customPropertyObj.length; custPropCount++) {
         var customProperty = JSON.parse(JSON.stringify(rulePackageObj.ruleList[rulecount].customPropertyObj[custPropCount]));
         if (!uniqueListOfCustProp.hasOwnProperty(customProperty.name)) {
-          uniqueListOfCustProp[customProperty.name]=customProperty;
+          uniqueListOfCustProp[customProperty.name] = customProperty;
         }
       }
     }
@@ -158,6 +174,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     $scope.createIfCustomPropertyDontExsists(uniqueListOfCustProp);
   };
 
+  //Check if a rule exsists return object if found else null
   $scope.ruleExsists = function(ruleName) {
     for (var count = 0; count < serverRuleList.length; count++) {
       if (serverRuleList[count].name === ruleName) {
@@ -167,27 +184,32 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     return null;
   };
 
-$scope.createIfCustomPropertyDontExsists = function(uniqueListOfCustProp) {
-  var tmpCustomProperties = qrsCustProp.query({server: $scope.server});
-  tmpCustomProperties.$promise.then(function() {
-    for (var key in uniqueListOfCustProp) {
-      for (var count = 0; count < tmpCustomProperties.length; count++) {
-        if (tmpCustomProperties[count].name === key) {
-          return;
+  //If the custom property do not exsist create it
+  $scope.createIfCustomPropertyDontExsists = function(uniqueListOfCustProp) {
+    var tmpCustomProperties = qrsCustProp.query({
+      server: $scope.server
+    });
+    tmpCustomProperties.$promise.then(function() {
+      for (var key in uniqueListOfCustProp) {
+        for (var count = 0; count < tmpCustomProperties.length; count++) {
+          if (tmpCustomProperties[count].name === key) {
+            return;
+          }
         }
+        delete uniqueListOfCustProp[key].id;
+        qrsCustProp.save({
+          server: $scope.server
+        }, uniqueListOfCustProp[key]);
       }
-      delete uniqueListOfCustProp[key].id;
-      qrsCustProp.save({server: $scope.server},uniqueListOfCustProp[key]);
-    }
-  });
-};
+    });
+  };
 
   //Delete rulepackage
   $scope.deleteRulePackage = function(findRuleName) {
     $scope.packageList = localStorage.delete(findRuleName);
   }
 
-
+  //GEt the details of a rule with id
   $scope.detail = function(id) {
     $scope.ruleDetail = qrsRule.get({
       ruleId: id

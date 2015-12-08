@@ -2,8 +2,8 @@
   "manifest_version": 2,
   "name": "ChromeRuleManagement",
   "short_name": "ChromeRuleManagement",
-  "description": "",
-  "version": "0.0.1",
+  "description": "Tool to allow reuese of rules in Qlik Sense",
+  "version": "0.0.2",
   "minimum_chrome_version": "38",
 
   "icons": {
@@ -18,6 +18,7 @@
   },
   "permissions": [
     "https://*/",
-    "storage"
+    "storage",
+    {"fileSystem": ["write"]} 
   ]
 }
