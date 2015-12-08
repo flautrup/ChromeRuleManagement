@@ -9,6 +9,7 @@ service.factory('localStorage', function() {
         'localpackagelist': []
       }, function(result) {
         $scope.packageList = result.localpackagelist;
+        localpackagelist = result.localpackagelist;
       });
     },
     set: function(rulePackage) {
@@ -34,10 +35,11 @@ service.factory('localStorage', function() {
         'localpackagelist': []
       }, function(list) {
         // Convert object to a string.
-        var result = JSON.stringify(list);
+        var result = angular.toJson(list);
 
         chrome.fileSystem.chooseEntry({
-          type: 'saveFile'
+          type: 'saveFile',
+          suggestedName: 'rules.json'
         }, function(writableFileEntry) {
 
           function errorHandler() {
@@ -72,14 +74,16 @@ service.factory('localStorage', function() {
           reader.onerror = errorHandler;
           reader.onloadend = function(e) {
             loadedpackagelist = JSON.parse(e.target.result);
-            console.log(loadedpackagelist);
+            //console.log(loadedpackagelist);
             for (var count = 0; count < loadedpackagelist.localpackagelist.length; count++) {
               localpackagelist.push(loadedpackagelist.localpackagelist[count]);
             }
             chrome.storage.local.set({
               'localpackagelist': localpackagelist
+            }, function() {
+              $scope.packageList=localpackagelist;
+              $scope.$apply();
             });
-            $scope.packageList=localpackagelist;
           };
 
           reader.readAsText(file);

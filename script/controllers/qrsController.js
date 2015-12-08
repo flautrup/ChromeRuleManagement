@@ -120,6 +120,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //Import packageList with and add to current list
   $scope.importPackageList = function () {
     localStorage.import($scope);
+    console.log($scope.packageList);
   }
 
   //Upload rulepackage to server
