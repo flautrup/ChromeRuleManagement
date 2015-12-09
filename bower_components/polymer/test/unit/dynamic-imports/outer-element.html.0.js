@@ -1,4 +1,0 @@
-
-  Polymer({
-    is: 'outer-element'
-  });

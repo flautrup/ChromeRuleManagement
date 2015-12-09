@@ -1,5 +1,0 @@
-
-    Polymer({
-      resizerIsPeer: true     
-    });
-  
