@@ -1,2 +1,0 @@
-
-loadWebAnimationsBuildTarget('web-animations-next');

@@ -1,2 +1,0 @@
-
-loadWebAnimationsBuildTarget('<%= target %>');
