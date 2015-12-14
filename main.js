@@ -4,7 +4,7 @@ var XRFKEY=rand(16);
 
 
 // Event handling
-var tabs = document.querySelector('paper-tabs');
+var tabs = document.querySelector('md-tabs');
 var pages = document.querySelector('core-pages');
 
 tabs.addEventListener('core-select',function(){
@@ -21,7 +21,7 @@ function rand(length,current){
 //Angular code
 
 //Services
-var service = angular.module("qrsService", ['ngResource']);
+var service = angular.module("qrsService", ['ngResource','ngMaterial']);
 
 service.config(["$httpProvider", function($httpProvider) {
   $httpProvider.defaults.headers.common = { 'x-qlik-xrfkey': XRFKEY };

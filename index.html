@@ -1,80 +1,62 @@
 <!DOCTYPE html>
-
 <html ng-app="qrsService">
 
 <head>
   <title>ChromeRuleManagement</title>
 
-  <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-
-  <link rel="import" href="bower_components/core-pages/core-pages.html">
-  <link rel="import" href="bower_components/core-icons/core-icons.html">
-  <link rel="import" href="bower_components/core-item/core-item.html">
-  <link rel="import" href="bower_components/core-input/core-input.html">
-  <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
-  <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-  <link rel="import" href="bower_components/font-roboto/roboto.html">
-  <link rel="import" href="bower_components/paper-button/paper-button.html">
-  <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
-  <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="bower_components/paper-fab/paper-fab.html">
-  <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
-  <link rel="import" href="bower_components/paper-toast/paper-toast.html">
-  <link rel="import" href="bower_components/paper-item/paper-item.html">
-  <link rel="import" href="bower_components/paper-input/paper-input-decorator.html">
-  <link rel="import" href="bower_components/paper-radio-button/paper-radio-button.html">
 
 
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 
-<body unresolved>
+<body unresolved="">
   <div ng-controller="qrsController">
-    <core-toolbar class="medium-tall">
-      <paper-icon-button icon="menu"></paper-icon-button>
-      <span flex>Security Rule Management</span>
+    <md-toolbar layout="row">
+      <md-button><i class="material-icons">menu</i></md-button>
+      <span flex="">Security Rule Management</span>
       <span>{{logedin}}</span>
       <span>
-        <input is="core-input" placeholder="a single-line input" value="{{server}}" ng-model="server" committedValue="{{server}}">
+        <md-input-container>
+          <input placeholder="a single-line input" value="{{server}}" ng-model="server" committedvalue="{{server}}">
+        </md-input-container>
       </span>
-      <core-icon-button ng-click="login()" icon="lock"></core-icon-button>
-      <core-icon-button ng-click="list()" icon="refresh"></core-icon-button>
-      <div class="bottom fit">
-        <paper-tabs selected="0" noink>
-          <paper-tab>Server repository</paper-tab>
-          <paper-tab>Rule package</paper-tab>
-          <paper-tab>Local repository</paper-tab>
-        </paper-tabs>
-      </div>
-    </core-toolbar>
-
-
-    <section>
-      <core-pages selected="0" style="margin-bottom: 10px">
-        <div style="overflow: auto; height:600px">
-          <core-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)" class="rule-item" ng-class="disableRow(serverRule)">
-            <core-icon-button src="../../assets/icon_16.png"></core-icon-button>
-            <div flex>
-              <div class="name">{{serverRule.name}}</div>
-              <div class="description">{{serverRule.comment}}</div>
-              <div class="header">Custom properties</div>
-              <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
-              <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
-            </div>
-          </core-item>
-        </div>
+      <md-button ng-click="login()"><i class="material-icons">lock</i></md-button>
+      <md-button ng-click="list()"><i class="material-icons">refresh</i></md-button>
+    </md-toolbar>
+    <md-tabs selected="0" md-stretch-tabs="always">
+      <md-tab>
+        <md-tab-label>Server repository</md-tab-label>
+        <md-tab-body>
+          <div style="overflow: auto; height:600px">
+            <core-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)" class="rule-item" ng-class="disableRow(serverRule)">
+              <core-icon-button src="../../assets/icon_16.png"></core-icon-button>
+              <div flex="">
+                <div class="name">{{serverRule.name}}</div>
+                <div class="description">{{serverRule.comment}}</div>
+                <div class="header">Custom properties</div>
+                <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
+                <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
+              </div>
+            </core-item>
+          </div>
+          <md-tab-body>
+      </md-tab>
+      <md-tab>
+        <md-tab-label>Rule package</md-tab-label>
+        <md-tab-body>
         <div>
-          <paper-input-decorator label="Name" floatingLabel>
-            <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedValue="{{rulepPackageObj.packageName}}">
+          <paper-input-decorator label="Name" floatinglabel="">
+            <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedvalue="{{rulepPackageObj.packageName}}">
           </paper-input-decorator>
-          <paper-input-decorator label="Description" floatingLabel>
-            <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedValue="{{rulePackageObj.packageDescription}}">
+          <paper-input-decorator label="Description" floatinglabel="">
+            <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedvalue="{{rulePackageObj.packageDescription}}">
           </paper-input-decorator>
           <div style="overflow: auto; height:500px">
-            <core-item ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item" ng-class='disableRow(packageRule)'>
-              <div flex>
+            <core-item ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item" ng-class="disableRow(packageRule)">
+              <div flex="">
                 <div class="name">{{packageRule.name}}</div>
                 <div class="description">{{packageRule.comment}}</div>
                 <div class="header">Custom properties</div>
@@ -89,24 +71,39 @@
             <core-icon-button ng-click="clearRulePackage()" icon="clear"></core-icon-button>
           </div>
         </div>
+        <md-tab-body>
+      </md-tab>
+      <md-tab><md-tab-label>Local repository</md-tab-label>
+<md-tab-body>
         <div>
-        <div style="overflow: auto; height:500px">
-          <core-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
-            <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
-            <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
-            <div flex>
-              <div class="name">{{package.packageName}}</div>
-              <div class="description">{{package.packageDescription}}</div>
-            </div>
-          </core-item>
+          <div style="overflow: auto; height:500px">
+            <core-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
+              <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
+              <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
+              <div flex="">
+                <div class="name">{{package.packageName}}</div>
+                <div class="description">{{package.packageDescription}}</div>
+              </div>
+            </core-item>
+          </div>
+          <div class="actionbutton">
+            <core-icon-button ng-click="importPackageList()" icon="file-upload"></core-icon-button>
+            <core-icon-button ng-click="exportPackageList()" icon="file-download"></core-icon-button>
+          </div>
         </div>
-        <div class="actionbutton">
-          <core-icon-button ng-click="importPackageList()" icon="file-upload"></core-icon-button>
-          <core-icon-button ng-click="exportPackageList()" icon="file-download"></core-icon-button>
-        </div>
-      </div>
-      </core-pages>
-    </section>
+      </md-tab-body>
+      </md-tab>
+
+    </md-tabs>
+
+
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
 
     <script src="main.js"></script>
     <script src="script/services/qrsRules.js"></script>
@@ -114,7 +111,9 @@
     <script src="script/services/localStorage.js"></script>
     <script src="script/services/rulePackage.js"></script>
     <script src="script/controllers/qrsController.js"></script>
+
   </div>
+
 </body>
 
 </html>
