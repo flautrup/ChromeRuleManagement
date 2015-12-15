@@ -8,7 +8,6 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 
@@ -16,10 +15,11 @@
   <div ng-controller="qrsController">
     <md-toolbar layout="row">
       <md-button><i class="material-icons">menu</i></md-button>
-      <span flex="">Security Rule Management</span>
+      <span>Security Rule Management</span>
       <span>{{logedin}}</span>
       <span>
         <md-input-container>
+          <label>Server</label>
           <input placeholder="a single-line input" value="{{server}}" ng-model="server" committedvalue="{{server}}">
         </md-input-container>
       </span>
@@ -31,67 +31,76 @@
         <md-tab-label>Server repository</md-tab-label>
         <md-tab-body>
           <div style="overflow: auto; height:600px">
-            <core-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)" class="rule-item" ng-class="disableRow(serverRule)">
-              <core-icon-button src="../../assets/icon_16.png"></core-icon-button>
-              <div flex="">
-                <div class="name">{{serverRule.name}}</div>
-                <div class="description">{{serverRule.comment}}</div>
-                <div class="header">Custom properties</div>
-                <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
-                <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
-              </div>
-            </core-item>
+            <md-list>
+              <md-list-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)" class="rule-item" ng-class="disableRow(serverRule)">
+                <md-button><i class="material-icons" src="../../assets/icon_16.png"></i></md-button>
+                <div flex="">
+                  <div class="name">{{serverRule.name}}</div>
+                  <div class="description">{{serverRule.comment}}</div>
+                  <div class="header">Custom properties</div>
+                  <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
+                  <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
+                </div>
+              </md-list-item>
+            </md-list>
           </div>
           <md-tab-body>
       </md-tab>
       <md-tab>
         <md-tab-label>Rule package</md-tab-label>
         <md-tab-body>
-        <div>
-          <paper-input-decorator label="Name" floatinglabel="">
-            <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedvalue="{{rulepPackageObj.packageName}}">
-          </paper-input-decorator>
-          <paper-input-decorator label="Description" floatinglabel="">
-            <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedvalue="{{rulePackageObj.packageDescription}}">
-          </paper-input-decorator>
-          <div style="overflow: auto; height:500px">
-            <core-item ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item" ng-class="disableRow(packageRule)">
-              <div flex="">
-                <div class="name">{{packageRule.name}}</div>
-                <div class="description">{{packageRule.comment}}</div>
-                <div class="header">Custom properties</div>
-                <div ng-repeat="customprop in packageRule.customPropertyObj">{{customprop.name}}</div>
-                <core-icon-button ng-click="toogleRule(packageRule)" icon="done">{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</core-icon-button>
-              </div>
-            </core-item>
+          <div>
+            <md-input-container>
+              <label>Name</label>
+              <input is="core-input" placeholder="a single-line input" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedvalue="{{rulepPackageObj.packageName}}">
+            </md-input-container>
+            <md-input-container>
+              <label>Description</label>
+              <input is="core-input" placeholder="a single-line input" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedvalue="{{rulePackageObj.packageDescription}}">
+            </md-input-container>
+            <div style="overflow: auto; height:500px">
+              <md-list>
+                <md-list-item ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" src="assets/icon_16.png" class="rule-item" ng-class="disableRow(packageRule)">
+                  <div flex="">
+                    <div class="name">{{packageRule.name}}</div>
+                    <div class="description">{{packageRule.comment}}</div>
+                    <div class="header">Custom properties</div>
+                    <div ng-repeat="customprop in packageRule.customPropertyObj">{{customprop.name}}</div>
+                    <core-icon-button ng-click="toogleRule(packageRule)" icon="done">{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</core-icon-button>
+                  </div>
+                </md-list-item>
+              </md-list>
+            </div>
+            <div class="actionbutton">
+              <md-button ng-click="saveRulePackage()"><i class="material-icons">save</i></md-button>
+              <md-button ng-click="uploadRulePackage(rulePackageObj)"><i class="material-icons">file-upload</i></md-button>
+              <md-button ng-click="clearRulePackage()"><i class="material-icons">clear</i></md-button>
+            </div>
           </div>
-          <div class="actionbutton">
-            <core-icon-button ng-click="saveRulePackage()" icon="save"></core-icon-button>
-            <core-icon-button ng-click="uploadRulePackage(rulePackageObj)" icon="file-upload"></core-icon-button>
-            <core-icon-button ng-click="clearRulePackage()" icon="clear"></core-icon-button>
-          </div>
-        </div>
-        <md-tab-body>
+          <md-tab-body>
       </md-tab>
-      <md-tab><md-tab-label>Local repository</md-tab-label>
-<md-tab-body>
-        <div>
-          <div style="overflow: auto; height:500px">
-            <core-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
-              <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
-              <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
-              <div flex="">
-                <div class="name">{{package.packageName}}</div>
-                <div class="description">{{package.packageDescription}}</div>
-              </div>
-            </core-item>
+      <md-tab>
+        <md-tab-label>Local repository</md-tab-label>
+        <md-tab-body>
+          <div>
+            <div style="overflow: auto; height:500px">
+              <md-list>
+                <md-list-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
+                  <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
+                  <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
+                  <div flex="">
+                    <div class="name">{{package.packageName}}</div>
+                    <div class="description">{{package.packageDescription}}</div>
+                  </div>
+                </md-list-item>
+                <md-list>
+            </div>
+            <div class="actionbutton">
+              <md-button ng-click="importPackageList()"><i class="material-icons">file-upload</i></md-button>
+              <md-button ng-click="exportPackageList()"><i class="material-icons">file-download</i></md-button>
+            </div>
           </div>
-          <div class="actionbutton">
-            <core-icon-button ng-click="importPackageList()" icon="file-upload"></core-icon-button>
-            <core-icon-button ng-click="exportPackageList()" icon="file-download"></core-icon-button>
-          </div>
-        </div>
-      </md-tab-body>
+        </md-tab-body>
       </md-tab>
 
     </md-tabs>
