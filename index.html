@@ -4,45 +4,48 @@
 <head>
   <title>ChromeRuleManagement</title>
 
-
-
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="stylesfonts.css">
   <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 
 </head>
 
 <body unresolved="">
   <div ng-controller="qrsController">
-    <md-toolbar layout="row">
-      <md-button><i class="material-icons">menu</i></md-button>
-      <span>Security Rule Management</span>
-      <span>{{logedin}}</span>
-      <span>
-        <md-input-container>
-          <label>Server</label>
-          <input placeholder="a single-line input" value="{{server}}" ng-model="server" committedvalue="{{server}}">
-        </md-input-container>
-      </span>
-      <md-button ng-click="login()"><i class="material-icons">lock</i></md-button>
-      <md-button ng-click="list()"><i class="material-icons">refresh</i></md-button>
+    <md-toolbar layout="row" layout-align="space-between">
+      <div class="md-toolbar-tools">
+        <md-button><i class="material-icons">menu</i></md-button>
+        <span flex>Security Rule Management</span>
+        <span flex>{{logedin}}</span>
+        <span flex>
+          <md-input-container>
+            <label>Server</label>
+            <input placeholder="a single-line input" value="{{server}}" ng-model="server" committedvalue="{{server}}">
+          </md-input-container>
+        </span>
+        <md-button ng-click="login()"><i class="material-icons">lock</i></md-button>
+        <md-button ng-click="list()"><i class="material-icons">refresh</i></md-button>
+      </div>
     </md-toolbar>
-    <md-tabs selected="0" md-stretch-tabs="always">
+    <md-tabs selected="0" md-stretch-tabs="always" class="md-primary" md-dynamic-height="true">
       <md-tab>
         <md-tab-label>Server repository</md-tab-label>
         <md-tab-body>
           <div style="overflow: auto; height:600px">
-            <md-list>
-              <md-list-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)" class="rule-item" ng-class="disableRow(serverRule)">
-                <md-button><i class="material-icons" src="../../assets/icon_16.png"></i></md-button>
-                <div flex="">
-                  <div class="name">{{serverRule.name}}</div>
-                  <div class="description">{{serverRule.comment}}</div>
-                  <div class="header">Custom properties</div>
-                  <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
-                  <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
-                </div>
-              </md-list-item>
-            </md-list>
+            <md-content>
+              <md-list>
+                <md-list-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-click="addToRulePackage(serverRule)" class="rule-item" ng-class="disableRow(serverRule)">
+                  <md-button class="md-fab"><img src="../../assets/icon_16.png" width="16px" height="16px"></img></md-button>
+                  <div flex="">
+                    <div class="name">{{serverRule.name}}</div>
+                    <div class="description">{{serverRule.comment}}</div>
+                    <div class="header">Custom properties</div>
+                    <div ng-repeat="customprop in serverRule.customPropertyObj">{{customprop.name}}</div>
+                    <div>State: {{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</div>
+                  </div>
+                  <md-divider></md-divider>
+                </md-list-item>
+              </md-list>
+            </md-content>
           </div>
           <md-tab-body>
       </md-tab>
@@ -68,12 +71,13 @@
                     <div ng-repeat="customprop in packageRule.customPropertyObj">{{customprop.name}}</div>
                     <core-icon-button ng-click="toogleRule(packageRule)" icon="done">{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</core-icon-button>
                   </div>
+                  <md-divider></md-divider>
                 </md-list-item>
               </md-list>
             </div>
             <div class="actionbutton">
               <md-button ng-click="saveRulePackage()"><i class="material-icons">save</i></md-button>
-              <md-button ng-click="uploadRulePackage(rulePackageObj)"><i class="material-icons">file-upload</i></md-button>
+              <md-button ng-click="uploadRulePackage(rulePackageObj)"><i class="material-icons">file_upload</i></md-button>
               <md-button ng-click="clearRulePackage()"><i class="material-icons">clear</i></md-button>
             </div>
           </div>
@@ -86,18 +90,19 @@
             <div style="overflow: auto; height:500px">
               <md-list>
                 <md-list-item ng-repeat="package in packageList" value="{{package.packageName}}" class="rule-item">
-                  <core-icon-button ng-click="loadRulePackage(package)" icon="chevron-left"></core-icon-button>
-                  <core-icon-button ng-click="deleteRulePackage(package)" icon="delete"></core-icon-button>
+                  <md-button ng-click="loadRulePackage(package)"><i class="material-icons">chevron_left</i></md-button>
+                  <md-button ng-click="deleteRulePackage(package)"><i class="material-icons">delete</i></md-button>
                   <div flex="">
                     <div class="name">{{package.packageName}}</div>
                     <div class="description">{{package.packageDescription}}</div>
                   </div>
+                  <md-divider></md-divider>
                 </md-list-item>
                 <md-list>
             </div>
             <div class="actionbutton">
-              <md-button ng-click="importPackageList()"><i class="material-icons">file-upload</i></md-button>
-              <md-button ng-click="exportPackageList()"><i class="material-icons">file-download</i></md-button>
+              <md-button ng-click="importPackageList()"><i class="material-icons">file_upload</i></md-button>
+              <md-button ng-click="exportPackageList()"><i class="material-icons">file_download</i></md-button>
             </div>
           </div>
         </md-tab-body>
