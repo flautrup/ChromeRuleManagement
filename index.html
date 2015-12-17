@@ -57,22 +57,23 @@
         <md-tab-label>Rule package</md-tab-label>
         <md-tab-body>
           <div style="overflow: auto; height:500px" layout="column">
-            <md-input-container layout-margin>
+            <md-input-container layout-padding>
               <label>Name</label>
-              <input is="core-input" placeholder="Name of rule package" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedvalue="{{rulepPackageObj.packageName}}">
+              <input class="md-body-2" placeholder="Name of rule package" value="{{rulepPackageObj.packageName}}" ng-model="rulePackageObj.packageName" committedvalue="{{rulepPackageObj.packageName}}">
             </md-input-container>
-            <md-input-container layout-margin>
+            <md-input-container layout-padding>
               <label>Description</label>
-              <input is="core-input" placeholder="Description of rule package" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedvalue="{{rulePackageObj.packageDescription}}">
+              <input class="md-body-2" placeholder="Description of rule package" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedvalue="{{rulePackageObj.packageDescription}}">
             </md-input-container>
             <md-list>
-              <md-list-item layout="column" layout-align="start start" layout-margin ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" ng-class="disableRow(packageRule)">
-                <div class="md-list-item-text" layout="column">
+              <md-list-item layout="row" layout-align="start center" layout-margin ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" ng-class="disableRow(packageRule)">
+                <img class="md-avatar" src="../../assets/icon_128.png" width="48" height="48"></img>
+                <div class="md-list-item-text" layout="column" layout-align="start start">
                   <h2>{{packageRule.name}}</h2>
                   <i>{{packageRule.comment}}</i>
                   <h3>Custom properties</h3>
                   <div ng-repeat="customprop in packageRule.customPropertyObj"><i>{{customprop.name}}</i></div>
-                  <md-button ng-click="toogleRule(packageRule)"><i class="material-icons">done</i>{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</md-button>
+                  <md-button ng-click="toogleRule(packageRule)" flex="none"><i class="material-icons">done</i>{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</md-button>
                   <md-divider></md-divider>
                 </div>
               </md-list-item>
