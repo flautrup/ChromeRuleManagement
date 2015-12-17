@@ -8,6 +8,6 @@
   "dependencies": {
     "angular": "angular#latest",
     "angular-resource": "angular-resource#latest",
-    "angular-material": "~0.11.4"
+    "angular-material": "latest"
   }
 }
