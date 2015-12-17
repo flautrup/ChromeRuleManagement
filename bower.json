@@ -2,14 +2,12 @@
   "name": "ChromeRuleManagement",
   "description": "",
   "homepage": "",
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "",
   "private": true,
   "dependencies": {
-    "paper-elements": "Polymer/paper-elements#latest",
-    "core-elements": "Polymer/core-elements#latest",
     "angular": "angular#latest",
-    "angular-resource": "angular-resource#latest"
+    "angular-resource": "angular-resource#latest",
+    "angular-material": "latest"
   }
 }
