@@ -1,5 +1,5 @@
 //Configuration
-var SERVER = "https://rd-flp2.qliktech.com/";
+var SERVER = "rd-flp2.qliktech.com";
 var XRFKEY = rand(16);
 
 

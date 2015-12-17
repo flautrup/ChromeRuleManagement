@@ -14,7 +14,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   $scope.list = function() {
     //GET rules
     serverRuleList = qrsRules.query({
-      server: $scope.server
+      server: "https:"+$scope.server
     }, function() {
       console.log(serverRuleList);
     });
@@ -52,7 +52,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //Store custom property in rule
   $scope.storeCustomPropertyInRule = function(index, customPropName) {
     var tmpCustObj = qrsCustProp.get({
-      server: $scope.server,
+      server: "https:"+$scope.server,
       custPropName: customPropName
     });
     //Connect custom property definitions to rules that use them
@@ -149,7 +149,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
         delete tmpRule.id;
         tmpRule.modifiedDate = new Date().toISOString();
         qrsRules.update({
-          server: $scope.server,
+          server: "https:"+$scope.server,
           ruleId: exsistingRule.id
         }, tmpRule);
       }
@@ -159,7 +159,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
       rule.name = rule.name + "_pkg"
 
       qrsRules.save({
-        server: $scope.server
+        server: "https:"+$scope.server
       }, rule);
 
       //Create a list of unique custom properties in rule package
@@ -188,7 +188,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //If the custom property do not exsist create it
   $scope.createIfCustomPropertyDontExsists = function(uniqueListOfCustProp) {
     var tmpCustomProperties = qrsCustProp.query({
-      server: $scope.server
+      server: "https://"+$scope.server
     });
     tmpCustomProperties.$promise.then(function() {
       for (var key in uniqueListOfCustProp) {
@@ -199,7 +199,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
         }
         delete uniqueListOfCustProp[key].id;
         qrsCustProp.save({
-          server: $scope.server
+          server: "https:"+$scope.server
         }, uniqueListOfCustProp[key]);
       }
     });
