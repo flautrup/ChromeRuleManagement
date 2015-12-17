@@ -36,23 +36,6 @@
   font-feature-settings: 'liga';
 }
 
-.name {
-      font-size: 1.22em;
-      font-weight: bold;
-      margin-top:5px;
-      margin-bottom:5px;
-}
-
-.header {
-      margin-top: 5px;
-      font-size: 1.2em;
-      font-weight: bold;
-}
-
-.description {
-      font-size: 1.1em;
-      font-style: italic;
-}
 
 .ruledissabled {
   color:grey;

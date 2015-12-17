@@ -23,8 +23,7 @@ function rand(length, current) {
 //Services
 var service = angular.module("qrsService", ['ngResource', 'ngMaterial']).config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
-    .primaryPalette('green',{'default': '800'})
-    .accentPalette('orange');
+    .primaryPalette('blue-grey');
 });;
 
 service.config(["$httpProvider", function($httpProvider) {
