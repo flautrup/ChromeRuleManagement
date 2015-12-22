@@ -2,16 +2,6 @@
 var SERVER = "rd-flp2.qliktech.com";
 var XRFKEY = rand(16);
 
-
-// Event handling
-var tabs = document.querySelector('md-tabs');
-var pages = document.querySelector('core-pages');
-
-tabs.addEventListener('core-select', function() {
-  pages.selected = tabs.selected;
-});
-
-
 //Supporting functions
 function rand(length, current) {
   current = current ? current : '';
