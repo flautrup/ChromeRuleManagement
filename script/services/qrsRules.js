@@ -1,6 +1,6 @@
 //Service to work with rules in QRS
 service.factory('qrsRules', function($resource) {
-  return $resource('https://:host/qrs/systemrule/:ruleId?xrfkey=' + XRFKEY, {}, {
+  return $resource(':host/qrs/systemrule/:ruleId?xrfkey=' + XRFKEY, {}, {
     'get': {
       method: 'GET'
     },
