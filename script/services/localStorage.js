@@ -13,11 +13,27 @@ service.factory('localStorage', function() {
       });
     },
     set: function(rulePackage) {
-      localpackagelist.push(rulePackage);
-      chrome.storage.local.set({
-        'localpackagelist': localpackagelist
-      });
-      return localpackagelist;
+      //check if already exsists
+      var count = 0;
+      var duplicate = false;
+
+      while (!duplicate && count < localpackagelist.length) {
+        if (localpackagelist[count].packageName === rulePackage.packageName) {
+          duplicate = true;
+        } else {
+          count++;
+        }
+      }
+
+      if (count == localpackagelist.length) {
+        localpackagelist.push(rulePackage);
+        chrome.storage.local.set({
+          'localpackagelist': localpackagelist
+        });
+        return localpackagelist;
+      } else {
+        return localpackagelist;
+      }
     },
     delete: function(rulePackage) {
       var index = 0;
@@ -81,7 +97,7 @@ service.factory('localStorage', function() {
             chrome.storage.local.set({
               'localpackagelist': localpackagelist
             }, function() {
-              $scope.packageList=localpackagelist;
+              $scope.packageList = localpackagelist;
               $scope.$apply();
             });
           };

@@ -125,8 +125,8 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     $scope.rulePackageObj = $scope.setRulePackageDescription($scope.rulePackageObj.packageDescription);
 
     //store to local storage and clear.
-    console.log($scope.packageList);
     $scope.packageList = localStorage.set($scope.rulePackageObj);
+    console.log($scope.packageList);
   };
 
   //Clears current rule package
