@@ -15,7 +15,9 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     // Update SERVER
     SERVER = $scope.server;
     //GET rules
-    serverRuleList = qrsRules.query({host: $scope.server},function() {
+    serverRuleList = qrsRules.query({
+      host: "https:" + $scope.server
+    }, function() {
       console.log(serverRuleList);
     });
 
@@ -23,19 +25,35 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     serverRuleList.$promise.then(function() {
 
       //Scan for custom properties
-      var regexp = /@([\w\d]+)[=!\W]/g;
+      var regexp = /@[\w\d]+[=!)\s]/g;
       var nameRegexp = /[\w\d]+/;
 
+      //Find custom properties in rules
       for (countRules = 0; countRules < serverRuleList.length; countRules++) {
-        serverRuleList[countRules].customPropertyList = serverRuleList[countRules].rule.match(regexp);
+        var tmpCustomPropertyList = serverRuleList[countRules].rule.match(regexp);
+        if (tmpCustomPropertyList !== null) {
+          serverRuleList[countRules].customPropertyList = [];
+          for (countProp = 0; countProp < tmpCustomPropertyList.length; countProp++) {
+            serverRuleList[countRules].customPropertyList[countProp]=nameRegexp.exec(tmpCustomPropertyList[countProp])[0];
+          }
+        }
         serverRuleList[countRules].customPropertyObj = [];
       }
 
+      //Create unique list of custom properties
       for (countRules = 0; countRules < serverRuleList.length; countRules++) {
-        if (serverRuleList[countRules].customPropertyList !== null) {
+        if (serverRuleList[countRules].customPropertyList !== null && serverRuleList[countRules].customPropertyList !== undefined) {
+          uniqueCustomPropertyList = $scope.getUniqueListOfCustomProperties(serverRuleList[countRules].customPropertyList);
+          serverRuleList[countRules].customPropertyList = uniqueCustomPropertyList;
+        }
+      }
+
+      //Extract the name of the custom properties.
+      for (countRules = 0; countRules < serverRuleList.length; countRules++) {
+        if (serverRuleList[countRules].customPropertyList !== null && serverRuleList[countRules].customPropertyList !== undefined) {
           for (countProp = 0; countProp < serverRuleList[countRules].customPropertyList.length; countProp++) {
-            var custPropName = nameRegexp.exec(serverRuleList[countRules].customPropertyList[countProp]);
-            $scope.storeCustomPropertyInRule(countRules, custPropName[0]);
+            //var custPropName = nameRegexp.exec(serverRuleList[countRules].customPropertyList[countProp]);
+            $scope.storeCustomPropertyInRule(countRules, serverRuleList[countRules].customPropertyList[countProp]);
           }
         }
       }
@@ -49,14 +67,29 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
 
   };
 
+  $scope.getUniqueListOfCustomProperties = function(arr) {
+    var n = {},
+      r = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (!n[arr[i]]) {
+        n[arr[i]] = true;
+        r.push(arr[i]);
+      }
+    }
+    return r;
+  }
+
   //Store custom property in rule
   $scope.storeCustomPropertyInRule = function(index, customPropName) {
     var tmpCustObj = qrsCustProp.get({
-      host: $scope.server,
+      host: "https:" + $scope.server,
       custPropName: customPropName
     });
     //Connect custom property definitions to rules that use them
     tmpCustObj.$promise.then(function() {
+      //Only store if it do not alrealy exsist
+
+
       serverRuleList[index].customPropertyObj.push(tmpCustObj[0]);
       console.log(tmpCustObj);
     });
@@ -92,8 +125,8 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     $scope.rulePackageObj = $scope.setRulePackageDescription($scope.rulePackageObj.packageDescription);
 
     //store to local storage and clear.
-    console.log($scope.packageList);
     $scope.packageList = localStorage.set($scope.rulePackageObj);
+    console.log($scope.packageList);
   };
 
   //Clears current rule package
@@ -108,7 +141,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
         $scope.rulePackageObj = findRulePackage;
       }
     }
-    $scope.selectedIndex=1;
+    $scope.selectedIndex = 1;
   };
 
   //Export packageList with all content
@@ -148,7 +181,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
         delete tmpRule.id;
         tmpRule.modifiedDate = new Date().toISOString();
         qrsRules.update({
-          host: $scope.server,
+          host: "https:" + $scope.server,
           ruleId: exsistingRule.id
         }, tmpRule);
       }
@@ -157,7 +190,9 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
       delete rule.id;
       rule.name = rule.name + "_pkg"
 
-      qrsRules.save({host: $scope.server},rule);
+      qrsRules.save({
+        host: "https:" + $scope.server
+      }, rule);
 
       //Create a list of unique custom properties in rule package
       for (var custPropCount = 0; custPropCount < rulePackageObj.ruleList[rulecount].customPropertyObj.length; custPropCount++) {
@@ -184,7 +219,9 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
 
   //If the custom property do not exsist create it
   $scope.createIfCustomPropertyDontExsists = function(uniqueListOfCustProp) {
-    var tmpCustomProperties = qrsCustProp.query({host: $scope.server});
+    var tmpCustomProperties = qrsCustProp.query({
+      host: "https:" + $scope.server
+    });
     tmpCustomProperties.$promise.then(function() {
       for (var key in uniqueListOfCustProp) {
         for (var count = 0; count < tmpCustomProperties.length; count++) {
@@ -193,7 +230,9 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
           }
         }
         delete uniqueListOfCustProp[key].id;
-        qrsCustProp.save({host: $scope.server},uniqueListOfCustProp[key]);
+        qrsCustProp.save({
+          host: "https:" + $scope.server
+        }, uniqueListOfCustProp[key]);
       }
     });
   };
@@ -224,7 +263,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //Login to server
   $scope.login = function() {
 
-    $http.get("https://"+ $scope.server + "/hub?xrfkey=" + XRFKEY, {
+    $http.get("https://" + $scope.server + "/hub?xrfkey=" + XRFKEY, {
       withCredentials: true
     });
     $scope.logedin = "Logged in";
