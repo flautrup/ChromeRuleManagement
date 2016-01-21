@@ -32,11 +32,11 @@
       <md-tab>
         <md-tab-label>Server repository</md-tab-label>
         <md-tab-body>
-          <div style="overflow: auto; height:600px">
-            <md-content>
+          <div style="overflow: auto; height: 700px;" layout="column">
+            <md-content flex layout="column">
               <md-list>
                 <md-list-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-class="disableRow(serverRule)">
-                  <md-button ng-click="addToRulePackage(serverRule)">
+                  <md-button aria-label="Add rule" ng-click="addToRulePackage(serverRule)">
                     <img class="md-avatar" src="../../assets/icon_128.png" width="48" height="48"></img>
                   </md-button>
                   <div class="md-list-item-text" layout="column">
@@ -96,8 +96,10 @@
                   <md-button ng-click="loadRulePackage(package)"><i class="material-icons">chevron_left</i></md-button>
                   <md-button ng-click="deleteRulePackage(package)"><i class="material-icons">delete</i></md-button>
                   <div flex="">
-                    <div class="name">{{package.packageName}}</div>
-                    <div class="description">{{package.packageDescription}}</div>
+                    <div>
+                      <h2>{{package.packageName}}</h2>
+                    </div>
+                    <div>{{package.packageDescription}}</div>
                   </div>
                   <md-divider></md-divider>
                 </md-list-item>
