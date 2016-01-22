@@ -34,7 +34,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
         if (tmpCustomPropertyList !== null) {
           serverRuleList[countRules].customPropertyList = [];
           for (countProp = 0; countProp < tmpCustomPropertyList.length; countProp++) {
-            serverRuleList[countRules].customPropertyList[countProp]=nameRegexp.exec(tmpCustomPropertyList[countProp])[0];
+            serverRuleList[countRules].customPropertyList[countProp] = nameRegexp.exec(tmpCustomPropertyList[countProp])[0];
           }
         }
         serverRuleList[countRules].customPropertyObj = [];
@@ -88,20 +88,20 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     //Connect custom property definitions to rules that use them
     tmpCustObj.$promise.then(function() {
       //Only store if it do not alrealy exsist
-
-
-      serverRuleList[index].customPropertyObj.push(tmpCustObj[0]);
-      console.log(tmpCustObj);
+      if (tmpCustObj[0] !== undefined) {
+        serverRuleList[index].customPropertyObj.push(tmpCustObj[0]);
+        console.log(tmpCustObj);
+      }
     });
   };
 
   //Change in rule and not added atribute.
-  $scope.toogleRule = function(rule) {
+  $scope.toggleRule = function(rule) {
     var count = 0;
-    while (rule.id != serverRuleList[count].id) {
+    while (rule.id !== $scope.rulePackageObj.ruleList[count].id) {
       count++;
     }
-    serverRuleList[count].disabled = !serverRuleList[count].disabled;
+    $scope.rulePackageObj.ruleList[count].disabled = ! $scope.rulePackageObj.ruleList[count].disabled;
   }
 
   //Add rule to rule package
@@ -242,7 +242,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     $scope.packageList = localStorage.delete(findRuleName);
   }
 
-  //GEt the details of a rule with id
+  //Get the details of a rule with id
   $scope.detail = function(id) {
     $scope.ruleDetail = qrsRule.get({
       ruleId: id

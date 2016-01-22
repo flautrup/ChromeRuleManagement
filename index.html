@@ -32,7 +32,7 @@
       <md-tab>
         <md-tab-label>Server repository</md-tab-label>
         <md-tab-body>
-          <div style="overflow: auto; height: 700px;" layout="column">
+          <div style="overflow: auto; height: 550px;" layout="column">
             <md-content flex layout="column">
               <md-list>
                 <md-list-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-class="disableRow(serverRule)">
@@ -73,7 +73,7 @@
                   <i>{{packageRule.comment}}</i>
                   <h3>Custom properties</h3>
                   <div ng-repeat="customprop in packageRule.customPropertyObj"><i>{{customprop.name}}</i></div>
-                  <md-button ng-click="toogleRule(packageRule)" flex="none"><i class="material-icons">done</i>{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</md-button>
+                  <md-button ng-click="toggleRule(packageRule)" flex="none"><i class="material-icons">done</i>{{(packageRule.disabled ? 'Disabled' : 'Enabled')}}</md-button>
                   <md-divider></md-divider>
                 </div>
               </md-list-item>
