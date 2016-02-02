@@ -1,5 +1,5 @@
 //Controller
-service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp", "localStorage", "rulePackage", function($scope, $http, qrsRules, qrsCustProp, localStorage, rulePackage) {
+service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp", "localStorage", "rulePackage", "$mdToast", function($scope, $http, qrsRules, qrsCustProp, localStorage, rulePackage,$mdToast) {
 
   SERVER = $scope.server;
   $scope.logedin = "Logged out";
@@ -269,7 +269,11 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
       $scope.logedin = "Logged in";
       $scope.list();
     }, function () {
-      $scope.logedin = "Failed log in";
+      $scope.logedin = "Login failed";
+      var url="https://"+$scope.server+"/hub";
+      var alert="<md-toast>Please access <a href="+url+" target='_blank'>"+url+"</a> in browser</md-toast>";
+      $mdToast.show({template: alert});
+      //$mdToast.show($mdToast.simple().textContent(alert));
     });
   };
 
