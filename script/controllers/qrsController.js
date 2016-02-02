@@ -265,9 +265,12 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
 
     $http.get("https://" + $scope.server + "/hub?xrfkey=" + XRFKEY, {
       withCredentials: true
+    }).then(function () {
+      $scope.logedin = "Logged in";
+      $scope.list();
+    }, function () {
+      $scope.logedin = "Failed log in";
     });
-    $scope.logedin = "Logged in";
-    $scope.list();
   };
 
 }]);
