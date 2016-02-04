@@ -1,5 +1,5 @@
 //Controller
-service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp", "localStorage", "rulePackage", function($scope, $http, qrsRules, qrsCustProp, localStorage, rulePackage) {
+service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp", "localStorage", "rulePackage", "$mdToast", function($scope, $http, qrsRules, qrsCustProp, localStorage, rulePackage,$mdToast) {
 
   SERVER = $scope.server;
   $scope.logedin = "Logged out";
@@ -107,6 +107,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //Add rule to rule package
   $scope.addToRulePackage = function(rule) {
     $scope.rulePackageObj = rulePackage.add(rule);
+    rule.selected=true;
   };
 
   //Set rulepackage name
@@ -170,6 +171,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
       //Remove added content
       delete rule.customPropertyObj;
       delete rule.customPropertyList;
+      delete rule.selected;
 
       //Dissable rule if it exsists
       var exsistingRule = $scope.ruleExsists(rule.name);
@@ -251,7 +253,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     });
   };
 
-  //Chang UI if rule is dissabled
+  //Change UI if rule is dissabled
   $scope.disableRow = function(rule) {
     if (rule.disabled) {
       return "core-item ruledissabled";
@@ -260,14 +262,29 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     }
   }
 
+  //Chang UI if rule is selected
+$scope.ruleSelected = function(rule) {
+  if (rule.selected) {
+    return "ruleselected";
+  } else {
+    return "";
+  }
+}
   //Login to server
   $scope.login = function() {
 
     $http.get("https://" + $scope.server + "/hub?xrfkey=" + XRFKEY, {
       withCredentials: true
+    }).then(function () {
+      $scope.logedin = "Logged in";
+      $scope.list();
+    }, function () {
+      $scope.logedin = "Login failed";
+      var url="https://"+$scope.server+"/hub";
+      var alert="<md-toast>Please access <a href="+url+" target='_blank'>"+url+"</a> in browser</md-toast>";
+      $mdToast.show({template: alert});
+      //$mdToast.show($mdToast.simple().textContent(alert));
     });
-    $scope.logedin = "Logged in";
-    $scope.list();
   };
 
 }]);

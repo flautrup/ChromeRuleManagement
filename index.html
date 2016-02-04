@@ -39,7 +39,7 @@
                   <md-button aria-label="Add rule" ng-click="addToRulePackage(serverRule)">
                     <img class="md-avatar" src="../../assets/icon_128.png" width="48" height="48"></img>
                   </md-button>
-                  <div class="md-list-item-text" layout="column">
+                  <div class="md-list-item-text" layout="column" ng-class="ruleSelected(serverRule)">
                     <h2>{{serverRule.name}}</h2>
                     <i>{{serverRule.comment}}</i>
                     <h3>Custom properties</h3>

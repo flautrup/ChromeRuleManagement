@@ -41,6 +41,10 @@
   color:grey;
 }
 
+.ruleselected {
+  color: green;
+}
+
 .actionbutton {
   background-color: #62AC1E;
   color: #fff;

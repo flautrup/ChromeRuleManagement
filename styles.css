@@ -110,6 +110,10 @@ md-list-item.rule-item .description {
   color:grey;
 }
 
+.ruleselected {
+  background-color: lightgrey;
+}
+
 .actionbutton {
   background-color: #62AC1E;
   color: #fff;

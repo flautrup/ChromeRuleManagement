@@ -3,7 +3,7 @@
   "name": "ChromeRuleManagement",
   "short_name": "ChromeRuleManagement",
   "description": "Tool to allow reuese of rules in Qlik Sense",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minimum_chrome_version": "38",
 
   "icons": {
