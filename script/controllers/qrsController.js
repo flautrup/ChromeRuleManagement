@@ -107,6 +107,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
   //Add rule to rule package
   $scope.addToRulePackage = function(rule) {
     $scope.rulePackageObj = rulePackage.add(rule);
+    rule.selected=true;
   };
 
   //Set rulepackage name
@@ -170,6 +171,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
       //Remove added content
       delete rule.customPropertyObj;
       delete rule.customPropertyList;
+      delete rule.selected;
 
       //Dissable rule if it exsists
       var exsistingRule = $scope.ruleExsists(rule.name);
@@ -251,7 +253,7 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     });
   };
 
-  //Chang UI if rule is dissabled
+  //Change UI if rule is dissabled
   $scope.disableRow = function(rule) {
     if (rule.disabled) {
       return "core-item ruledissabled";
@@ -260,6 +262,14 @@ service.controller("qrsController", ["$scope", "$http", "qrsRules", "qrsCustProp
     }
   }
 
+  //Chang UI if rule is selected
+$scope.ruleSelected = function(rule) {
+  if (rule.selected) {
+    return "ruleselected";
+  } else {
+    return "";
+  }
+}
   //Login to server
   $scope.login = function() {
 

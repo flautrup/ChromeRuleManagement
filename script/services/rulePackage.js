@@ -12,6 +12,12 @@ service.factory('rulePackage', function() {
       return rulePackageObj;
     },
     add: function(rule) {
+      //Check if already exsist
+      for (var count = 0; count < rulePackageObj.ruleList.length; count++) {
+        if (rulePackageObj.ruleList[count].name === rule.name) {
+          return rulePackageObj;
+        }
+      }
       rulePackageObj.ruleList.push(rule);
       return rulePackageObj;
     },
