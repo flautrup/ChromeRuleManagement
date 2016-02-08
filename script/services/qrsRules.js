@@ -15,6 +15,7 @@ service.factory('qrsRules', function($resource) {
     },
     'query': {
       method: 'GET',
+      url: ':host/qrs/systemrule/full?xrfkey=' + XRFKEY,
       isArray: true
     },
     'remove': {
