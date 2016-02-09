@@ -35,7 +35,7 @@
           <div style="overflow: auto; height: 550px;" layout="column">
             <md-content flex layout="column">
               <md-list>
-                <md-list-item ng-repeat="serverRule in serverRuleList" value="{{rule.id}}" ng-class="disableRow(serverRule)">
+                <md-list-item ng-repeat="serverRule in serverRuleList | orderBy: 'name' " value="{{rule.id}}" ng-class="disableRow(serverRule)">
                   <md-button aria-label="Add rule" ng-click="addToRulePackage(serverRule)">
                     <img class="md-avatar" src="../../assets/icon_128.png" width="48" height="48"></img>
                   </md-button>
