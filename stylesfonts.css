@@ -44,11 +44,3 @@
 .ruleselected {
   color: green;
 }
-
-.actionbutton {
-  background-color: #62AC1E;
-  color: #fff;
-  margin: 10px;
-  border-radius: 5px;
-  align-content: flex-start;
-}
