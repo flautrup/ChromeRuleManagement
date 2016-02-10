@@ -69,7 +69,7 @@
               <input class="md-body-2" placeholder="Description of rule package" value="{{rulePackageObj.packageDescription}}" ng-model="rulePackageObj.packageDescription" committedvalue="{{rulePackageObj.packageDescription}}">
             </md-input-container>
             <md-list>
-              <md-list-item layout="row" layout-align="start   center" layout-margin ng-repeat="packageRule in rulePackageObj.ruleList" value="{{packageRule.id}}" ng-class="disableRow(packageRule)">
+              <md-list-item layout="row" layout-align="start center" layout-margin ng-repeat="packageRule in rulePackageObj.ruleList | orderBy: 'name'" value="{{packageRule.id}}" ng-class="disableRow(packageRule)">
                 <img class="md-avatar" src="../../assets/icon_128.png" width="48" height="48"></img>
                 <div class="md-list-item-text" layout="column" layout-align="start start">
                   <h2>{{packageRule.name}}</h2>

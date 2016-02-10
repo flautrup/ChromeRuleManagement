@@ -270,6 +270,14 @@ $scope.ruleSelected = function(rule) {
     return "";
   }
 }
+
+//Select all rules for a rule package
+$scope.selectAllRules = function() {
+  for (var rulecount = 0; rulecount < serverRuleList.length; rulecount++) {
+    $scope.addToRulePackage(serverRuleList[rulecount]);
+  }
+}
+
   //Login to server
   $scope.login = function() {
 
