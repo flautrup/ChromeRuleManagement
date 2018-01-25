@@ -282,11 +282,11 @@ $scope.selectAllRules = function() {
   $scope.login = function() {
 
     $http.get("https://" + $scope.server + "/hub?xrfkey=" + XRFKEY, {
-      withCredentials: true
-    }).then(function () {
+      withCredentials: true;
+    }).then(function (response) {
       $scope.logedin = "Logged in";
       $scope.list();
-    }, function () {
+    }, function (response) {
       $scope.logedin = "Login failed";
       var url="https://"+$scope.server+"/hub";
       var alert="<md-toast>Please access <a href="+url+" target='_blank'>"+url+"</a> in browser</md-toast>";
