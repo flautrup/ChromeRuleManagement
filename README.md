@@ -1,7 +1,7 @@
 # Rule Management
 
 ## Not working and abandond
-This project is no longer working an has been abandoned. I will port this tool to use Electron a Google will discontinue Chrome apps and has changed how they work.
+This project is no longer working an has been abandoned. I will port this tool to use Electron as Google will discontinue Chrome apps and has changed how they work.
 
 ## State:
 Beta
