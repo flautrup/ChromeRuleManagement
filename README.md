@@ -1,30 +1,33 @@
-#Rule Management
+# Rule Management
 
-##State:
+## Not working and abandond
+This project is no longer working an has been abandoned. I will port this tool to use Electron a Google will discontinue Chrome apps and has changed how they work.
+
+## State:
 Beta
 
-##Description:
+## Description:
 This is a Chrome app developed to help the reuse and transfer of rules between
 Qlik Sense environments. The tool is able to extract rule from a Qlik Sense
 installation store them as packages and then upload them to a new Qlik Sense
 system. It also supports exporting of a library of rule packages so that it can
 be used by other administrators
 
-##Sense Configuration
+## Sense Configuration
 The tool uses windows authentication. The following is needed for the tool to be
 able to access Qlik Sense.
 * Default proxy accessed without a virtual proxy prefix supports Windows authentication
 * The windows authentication pattern for the virtual proxy is set to .
 * Depending on the certificate setup it might also be needed to access this virtual proxy first from the Chrome browser.
 
-##Installation:
+## Installation:
 * Download the .crx file
 * Open Chrome
 * Go to chrome://extensions
 * Drag the CRX file onto the chrome window
 * The application is now available in the Chrome App Launcher or go to chrome://apps/
 
-##How to use
+## How to use
 * Type in the name of the server in the toolbar
 * Press the lock to log into the server and get the list of rules and their associated custom properties
 * Press the rule icon in front of the rule to select it to be included in a rule package
